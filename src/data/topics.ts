@@ -54,6 +54,12 @@ export const topics: Topic[] = [
       "What complications should I watch for?",
       "Can you refer me to a diabetes educator or dietitian?",
     ],
+    sources: [
+      { name: "CDC — Type 2 Diabetes", url: "https://www.cdc.gov/diabetes/about/about-type-2-diabetes.html" },
+      { name: "American Diabetes Association", url: "https://diabetes.org/about-diabetes/type-2" },
+      { name: "Mayo Clinic — Type 2 Diabetes", url: "https://www.mayoclinic.org/diseases-conditions/type-2-diabetes/symptoms-causes/syc-20351193" },
+      { name: "NIH MedlinePlus — Diabetes", url: "https://medlineplus.gov/diabetestype2.html" },
+    ],
   },
   {
     id: "high-blood-pressure",
