@@ -175,9 +175,12 @@ export const topics: Topic[] = [
       "What should I do during a severe asthma attack?",
       "Should I see an allergist for additional testing?",
     ],
+    sources: [
+      { name: "CDC — Asthma", url: "https://www.cdc.gov/asthma/default.htm" },
+      { name: "Mayo Clinic — Asthma", url: "https://www.mayoclinic.org/diseases-conditions/asthma/symptoms-causes/syc-20369653" },
+      { name: "NIH MedlinePlus — Asthma", url: "https://medlineplus.gov/asthma.html" },
+    ],
   },
-  {
-    id: "anxiety",
     title: "Anxiety",
     definition: "More than just worry — a condition where your body's alarm system fires too often, making daily life feel overwhelming.",
     description: "When worry becomes constant and hard to control",
