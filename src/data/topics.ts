@@ -404,5 +404,9 @@ export const topics: Topic[] = [
       "What specific foods and habits should I avoid?",
       "Do I need an endoscopy to check for damage?",
     ],
+    sources: [
+      { name: "Mayo Clinic — GERD", url: "https://www.mayoclinic.org/diseases-conditions/gerd/symptoms-causes/syc-20361940" },
+      { name: "NIH MedlinePlus — GERD", url: "https://medlineplus.gov/gerd.html" },
+      { name: "CDC — Digestive Diseases", url: "https://www.cdc.gov/nchs/fastats/digestive-diseases.htm" },
+    ],
   },
-];
