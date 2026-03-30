@@ -328,9 +328,12 @@ export const topics: Topic[] = [
       "What medications can protect my kidneys from further damage?",
       "How often should I get my kidney function tested?",
     ],
+    sources: [
+      { name: "CDC — Chronic Kidney Disease", url: "https://www.cdc.gov/kidney-disease/about/index.html" },
+      { name: "Mayo Clinic — Chronic Kidney Disease", url: "https://www.mayoclinic.org/diseases-conditions/chronic-kidney-disease/symptoms-causes/syc-20354521" },
+      { name: "NIH MedlinePlus — Kidney Disease", url: "https://medlineplus.gov/chronickidneydisease.html" },
+    ],
   },
-  {
-    id: "thyroid-disease",
     title: "Thyroid Disease",
     definition: "When the small gland in your neck makes too much or too little hormone, throwing your body's metabolism off balance.",
     description: "How a tiny gland controls your energy, weight, and mood",
