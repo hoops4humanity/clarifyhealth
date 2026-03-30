@@ -4,6 +4,11 @@ export interface TopicSection {
   content: string;
 }
 
+export interface TopicSource {
+  name: string;
+  url: string;
+}
+
 export interface Topic {
   id: string;
   title: string;
@@ -11,6 +16,7 @@ export interface Topic {
   description: string;
   sections: TopicSection[];
   doctorQuestions: string[];
+  sources: TopicSource[];
 }
 
 export const topics: Topic[] = [
