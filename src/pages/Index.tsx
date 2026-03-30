@@ -4,8 +4,8 @@ import { ArrowRight, Search } from "lucide-react";
 import { topics } from "@/data/topics";
 
 const stats = [
-  { value: "6", label: "Health topics explained" },
-  { value: "24", label: "Sections of plain-language content" },
+  { value: "10", label: "Health topics explained" },
+  { value: "40", label: "Sections of plain-language content" },
   { value: "100%", label: "Jargon-free" },
 ];
 
