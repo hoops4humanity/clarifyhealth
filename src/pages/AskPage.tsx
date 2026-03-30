@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { topics } from "@/data/topics";
+import PageMeta from "@/components/PageMeta";
 
 function getPlainAnswer(question: string): string {
   const q = question.toLowerCase();
