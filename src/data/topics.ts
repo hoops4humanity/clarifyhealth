@@ -136,9 +136,13 @@ export const topics: Topic[] = [
       "How often should I get my cholesterol rechecked?",
       "Does my family history put me at higher risk for heart disease?",
     ],
+    sources: [
+      { name: "CDC — Cholesterol", url: "https://www.cdc.gov/cholesterol/about/index.html" },
+      { name: "American Heart Association — Cholesterol", url: "https://www.heart.org/en/health-topics/cholesterol" },
+      { name: "Mayo Clinic — High Cholesterol", url: "https://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/symptoms-causes/syc-20350800" },
+      { name: "NIH MedlinePlus — Cholesterol", url: "https://medlineplus.gov/cholesterol.html" },
+    ],
   },
-  {
-    id: "asthma",
     title: "Asthma",
     definition: "A condition where your airways become inflamed and narrow, making breathing difficult — especially during flare-ups.",
     description: "When your airways get tight and breathing becomes difficult",
