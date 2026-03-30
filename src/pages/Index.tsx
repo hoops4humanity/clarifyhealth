@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
 import { topics } from "@/data/topics";
+import PageMeta from "@/components/PageMeta";
 
 const stats = [
   { value: "10", label: "Health topics explained" },
