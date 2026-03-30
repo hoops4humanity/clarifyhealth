@@ -251,9 +251,12 @@ export const topics: Topic[] = [
       "Can you refer me to a therapist or counselor?",
       "What should I do if my symptoms get worse?",
     ],
+    sources: [
+      { name: "NIH — Depression", url: "https://www.nimh.nih.gov/health/topics/depression" },
+      { name: "Mayo Clinic — Depression", url: "https://www.mayoclinic.org/diseases-conditions/depression/symptoms-causes/syc-20356007" },
+      { name: "NIH MedlinePlus — Depression", url: "https://medlineplus.gov/depression.html" },
+    ],
   },
-  {
-    id: "heart-disease",
     title: "Heart Disease",
     definition: "A group of conditions that affect your heart's structure and function, often developing silently over decades.",
     description: "How heart problems develop and what you can do about them",
