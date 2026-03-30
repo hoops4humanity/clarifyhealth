@@ -25,7 +25,10 @@ const Index = () => {
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
         <div className="mx-auto w-full max-w-[1100px] stagger-reveal">
-          <h1 className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]">
+          <h1
+            className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]"
+            style={{ letterSpacing: "-1px" }}
+          >
             Your health,
             <br />
             finally
@@ -66,7 +69,7 @@ const Index = () => {
       </section>
 
       {/* Stats strip */}
-      <section className="px-6 py-[64px] md:py-[120px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+      <section className="grain-bg px-6 py-[64px] md:py-[120px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
         <div className="mx-auto max-w-[1100px]">
           <div className="grid grid-cols-1 md:grid-cols-3 stagger-reveal">
             {stats.map((stat, i) => (
@@ -87,8 +90,8 @@ const Index = () => {
                   {stat.value}
                 </span>
                 <span
-                  className="mt-2 text-[13px] uppercase tracking-[0.15em] text-muted-foreground"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  className="mt-2 text-[11px] uppercase text-muted-foreground"
+                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
                 >
                   {stat.label}
                 </span>
@@ -101,10 +104,13 @@ const Index = () => {
       {/* Topics grid */}
       <section className="px-6 py-[64px] md:py-[120px]">
         <div className="mx-auto max-w-[1100px]">
-          <h2 className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in">
+          <h2
+            className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in"
+            style={{ letterSpacing: "-0.5px" }}
+          >
             Explore Topics
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
             {topics.map((topic) => (
               <Link
                 key={topic.id}
@@ -130,8 +136,8 @@ const Index = () => {
                   </p>
                 </div>
                 <div
-                  className="mt-6 flex items-center text-[13px] text-muted-foreground group-hover:text-primary transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  className="mt-6 flex items-center text-muted-foreground group-hover:text-primary transition-colors"
+                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px", textTransform: "uppercase" }}
                 >
                   <span className="mr-2">Read more</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
