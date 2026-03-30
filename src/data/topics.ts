@@ -289,9 +289,13 @@ export const topics: Topic[] = [
       "What diet and exercise plan do you recommend for heart health?",
       "What symptoms should send me to the emergency room?",
     ],
+    sources: [
+      { name: "CDC — Heart Disease", url: "https://www.cdc.gov/heart-disease/about/index.html" },
+      { name: "American Heart Association — Heart Disease", url: "https://www.heart.org/en/health-topics/heart-attack" },
+      { name: "Mayo Clinic — Heart Disease", url: "https://www.mayoclinic.org/diseases-conditions/heart-disease/symptoms-causes/syc-20353118" },
+      { name: "NIH MedlinePlus — Heart Disease", url: "https://medlineplus.gov/heartdiseases.html" },
+    ],
   },
-  {
-    id: "kidney-disease",
     title: "Kidney Disease",
     definition: "When your kidneys gradually lose their ability to filter waste and excess fluid from your blood.",
     description: "Understanding how your kidneys work and what happens when they don't",
