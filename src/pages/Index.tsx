@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import { topics } from "@/data/topics";
+
+const stats = [
+  { value: "6", label: "Health topics explained" },
+  { value: "24", label: "Sections of plain-language content" },
+  { value: "100%", label: "Jargon-free" },
+];
 
 const Index = () => {
   const [query, setQuery] = useState("");
@@ -16,52 +22,121 @@ const Index = () => {
 
   return (
     <main>
-      {/* Hero */}
-      <section className="mx-auto max-w-3xl px-6 pb-16 pt-20 text-center md:pt-28">
-        <h1 className="text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
-          Your health, in{" "}
-          <span className="text-primary">plain English.</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-          No jargon. No confusion. Just clear, trustworthy answers about your health — written so anyone can understand.
-        </p>
+      {/* Hero — full viewport */}
+      <section className="flex min-h-screen flex-col justify-center px-6">
+        <div className="mx-auto w-full max-w-[1100px]">
+          <h1 className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]">
+            Your health,
+            <br />
+            finally
+            <br />
+            makes sense.
+          </h1>
+          <p
+            className="mt-6 max-w-[680px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Clear, trustworthy explanations of common health conditions — written so anyone can understand.
+          </p>
 
-        {/* Search */}
-        <form onSubmit={handleSearch} className="mx-auto mt-10 max-w-lg">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search a condition or ask a question..."
-              className="h-14 w-full rounded-2xl border bg-card pl-12 pr-4 text-base shadow-sm transition-shadow placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:shadow-md"
-            />
-          </div>
-        </form>
+          {/* Search bar */}
+          <form onSubmit={handleSearch} className="mt-10 max-w-[680px]">
+            <div className="flex gap-0" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px" }}>
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search a condition or ask a question..."
+                  className="h-12 w-full bg-transparent pl-11 pr-4 text-[15px] placeholder:text-muted-foreground focus:outline-none"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                />
+              </div>
+              <button
+                type="submit"
+                className="h-12 px-6 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
+                style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "0 3px 3px 0" }}
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
 
-      {/* Topic Cards */}
-      <section className="mx-auto max-w-5xl px-6 pb-24">
-        <h2 className="mb-8 text-center text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-          Common Topics
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {topics.map((topic) => (
-            <Link
-              key={topic.id}
-              to={`/topics/${topic.id}`}
-              className="group rounded-2xl border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-md"
-            >
-              <span className="text-3xl">{topic.emoji}</span>
-              <h3 className="mt-3 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                {topic.title}
-              </h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                {topic.description}
-              </p>
-            </Link>
-          ))}
+      {/* Stats strip */}
+      <section className="px-6 py-[64px] md:py-[120px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+        <div className="mx-auto max-w-[1100px]">
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center py-8 md:py-0 ${
+                  i < stats.length - 1 ? "md:border-r" : ""
+                }`}
+                style={{
+                  borderColor: "hsl(var(--border))",
+                  borderWidth: i < stats.length - 1 ? "0 0.5px 0 0" : "0",
+                }}
+              >
+                <span
+                  className="text-[48px] font-semibold text-primary md:text-[56px]"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {stat.value}
+                </span>
+                <span
+                  className="mt-2 text-[13px] uppercase tracking-[0.15em] text-muted-foreground"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Topics grid */}
+      <section className="px-6 py-[64px] md:py-[120px]">
+        <div className="mx-auto max-w-[1100px]">
+          <h2 className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px]">
+            Explore Topics
+          </h2>
+          <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "1px" }}>
+            {topics.map((topic) => (
+              <Link
+                key={topic.id}
+                to={`/topics/${topic.id}`}
+                className="group flex flex-col justify-between p-8 transition-colors hover:bg-[hsl(var(--section-bg))]"
+                style={{
+                  border: "0.5px solid hsl(var(--border))",
+                  borderRadius: "12px",
+                  margin: "-0.25px",
+                }}
+              >
+                <div>
+                  <h3
+                    className="text-[22px] font-medium text-foreground"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {topic.title}
+                  </h3>
+                  <p
+                    className="mt-2 text-[14px] leading-relaxed text-muted-foreground"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {topic.description}
+                  </p>
+                </div>
+                <div className="mt-6 flex items-center text-[13px] text-muted-foreground group-hover:text-primary transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  <span className="mr-2">Read more</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </main>
