@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
 import { topics } from "@/data/topics";
+import PageMeta from "@/components/PageMeta";
 
 const stats = [
   { value: "10", label: "Health topics explained" },
@@ -22,6 +23,7 @@ const Index = () => {
 
   return (
     <main>
+      <PageMeta title="Clarify Health — Your Health, in Plain English" description="Clear, trustworthy health education written in plain English. Understand diabetes, blood pressure, cholesterol, and more — no jargon, no confusion." canonical="/" />
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
         <div className="mx-auto w-full max-w-[1100px] stagger-reveal">

@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
+
 import FloatingAskButton from "@/components/FloatingAskButton";
 import Index from "./pages/Index";
 import TopicsIndex from "./pages/TopicsIndex";
@@ -31,7 +31,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <CustomCursor />
+        
         <ScrollToTop />
         <Header />
         <div className="animate-page-enter">

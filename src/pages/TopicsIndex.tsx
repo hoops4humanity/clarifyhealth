@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { topics } from "@/data/topics";
+import PageMeta from "@/components/PageMeta";
 
 const TopicsIndex = () => (
   <main className="pt-32 pb-[64px] md:pb-[120px] px-6">
+    <PageMeta title="Health Topics | Clarify Health" description="Browse 10 common health conditions explained in plain English. Diabetes, blood pressure, cholesterol, asthma, anxiety, and more." canonical="/topics" />
     <div className="mx-auto max-w-[1100px]">
       <div className="stagger-reveal">
         <h1 className="text-[36px] font-semibold text-foreground md:text-[48px]">Health Topics</h1>
