@@ -95,9 +95,13 @@ export const topics: Topic[] = [
       "Do I need medication, and what are the side effects?",
       "Can high blood pressure affect my other health conditions?",
     ],
+    sources: [
+      { name: "CDC — High Blood Pressure", url: "https://www.cdc.gov/high-blood-pressure/about/index.html" },
+      { name: "American Heart Association — Hypertension", url: "https://www.heart.org/en/health-topics/high-blood-pressure" },
+      { name: "Mayo Clinic — High Blood Pressure", url: "https://www.mayoclinic.org/diseases-conditions/high-blood-pressure/symptoms-causes/syc-20373410" },
+      { name: "NIH MedlinePlus — High Blood Pressure", url: "https://medlineplus.gov/highbloodpressure.html" },
+    ],
   },
-  {
-    id: "high-cholesterol",
     title: "High Cholesterol",
     definition: "When you have too much of a waxy substance in your blood that can clog your arteries and lead to heart disease.",
     description: "The fats in your blood and why they matter",
