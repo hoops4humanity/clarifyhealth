@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { topics } from "@/data/topics";
+import PageMeta from "@/components/PageMeta";
 
 const TopicsIndex = () => (
   <main className="pt-32 pb-[64px] md:pb-[120px] px-6">
