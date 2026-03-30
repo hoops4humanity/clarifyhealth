@@ -31,7 +31,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <CustomCursor />
+        
         <ScrollToTop />
         <Header />
         <div className="animate-page-enter">
