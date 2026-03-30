@@ -102,6 +102,8 @@ export const topics: Topic[] = [
       { name: "NIH MedlinePlus — High Blood Pressure", url: "https://medlineplus.gov/highbloodpressure.html" },
     ],
   },
+  {
+    id: "high-cholesterol",
     title: "High Cholesterol",
     definition: "When you have too much of a waxy substance in your blood that can clog your arteries and lead to heart disease.",
     description: "The fats in your blood and why they matter",
