@@ -1,6 +1,8 @@
+import PageMeta from "@/components/PageMeta";
+
 const AboutPage = () => (
   <main className="pt-32 pb-[64px] md:pb-[120px] px-6">
-    <div className="mx-auto max-w-[680px]">
+    <PageMeta title="About Clarify Health — Our Mission" description="Built by a high school student in NJ to help people understand their health. Clear, honest information written so anyone can understand." canonical="/about" />
       <div className="stagger-reveal">
         <h1 className="text-[36px] font-semibold text-foreground md:text-[48px]">About</h1>
 
