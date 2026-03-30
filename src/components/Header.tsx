@@ -42,7 +42,7 @@ const Header = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`text-[13px] font-medium uppercase tracking-[0.15em] transition-colors hover:text-foreground ${
+              className={`nav-link-underline text-[13px] font-medium uppercase tracking-[0.15em] transition-colors hover:text-foreground ${
                 location.pathname.startsWith(link.to)
                   ? "text-foreground"
                   : "text-muted-foreground"
@@ -56,7 +56,7 @@ const Header = () => {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 -mr-2"
+          className="md:hidden p-2 -mr-2 press-scale transition-transform"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -66,7 +66,7 @@ const Header = () => {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="bg-background px-6 pb-6 pt-2 md:hidden" style={{ borderBottom: "0.5px solid hsl(var(--border))" }}>
+        <nav className="bg-background px-6 pb-6 pt-2 md:hidden animate-fade-in" style={{ borderBottom: "0.5px solid hsl(var(--border))" }}>
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
