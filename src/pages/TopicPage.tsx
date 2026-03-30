@@ -37,8 +37,8 @@ const TopicPage = () => {
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-10 flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.18em] text-primary animate-fade-in"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
+          className="mb-10 flex items-center gap-2 font-medium uppercase text-primary animate-fade-in"
+          style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
         >
           <Link to="/topics" className="hover:underline">
             Topics
@@ -49,7 +49,10 @@ const TopicPage = () => {
 
         {/* Hero */}
         <div className="stagger-reveal">
-          <h1 className="text-[44px] font-semibold leading-[1.1] text-foreground md:text-[56px]">
+          <h1
+            className="text-[44px] font-semibold leading-[1.1] text-foreground md:text-[56px]"
+            style={{ letterSpacing: "-1px" }}
+          >
             {topic.title}
           </h1>
           <p
@@ -71,12 +74,15 @@ const TopicPage = () => {
               {topic.sections.map((section, i) => (
                 <section key={i}>
                   <span
-                    className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.2em] text-primary"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    className="mb-3 block font-semibold uppercase text-primary"
+                    style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
                   >
                     {section.label}
                   </span>
-                  <h2 className="mb-5 text-[26px] font-medium leading-tight text-foreground md:text-[28px]">
+                  <h2
+                    className="mb-5 text-[26px] font-medium leading-tight text-foreground md:text-[28px]"
+                    style={{ letterSpacing: "-0.5px" }}
+                  >
                     {section.title}
                   </h2>
                   <p
@@ -94,7 +100,7 @@ const TopicPage = () => {
 
             {/* Disclaimer */}
             <div
-              className="mt-20 p-8 animate-fade-in"
+              className="mt-20 p-8 animate-fade-in grain-bg"
               style={{
                 border: "0.5px solid hsl(var(--border))",
                 borderRadius: "12px",
@@ -103,7 +109,7 @@ const TopicPage = () => {
               }}
             >
               <p
-                className="text-[14px] leading-relaxed text-muted-foreground"
+                className="relative text-[14px] leading-relaxed text-muted-foreground"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 <strong className="text-foreground">Disclaimer:</strong> This
@@ -173,11 +179,14 @@ const TopicPage = () => {
 
       {/* Bottom CTA */}
       <section
-        className="mt-24 px-6 py-[64px] md:py-[80px]"
+        className="grain-bg mt-24 px-6 py-[64px] md:py-[80px]"
         style={{ backgroundColor: "hsl(var(--section-bg))" }}
       >
-        <div className="mx-auto max-w-[1100px] flex flex-col items-center text-center">
-          <h2 className="text-[32px] font-semibold text-foreground md:text-[36px]">
+        <div className="relative mx-auto max-w-[1100px] flex flex-col items-center text-center">
+          <h2
+            className="text-[32px] font-semibold text-foreground md:text-[36px]"
+            style={{ letterSpacing: "-0.5px" }}
+          >
             Still have questions?
           </h2>
           <p
