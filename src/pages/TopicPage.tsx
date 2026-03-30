@@ -8,9 +8,9 @@ const TopicPage = () => {
 
   if (!topic) {
     return (
-      <main className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold text-foreground">Topic not found</h1>
-        <Link to="/" className="mt-4 inline-block text-primary hover:underline">
+      <main className="pt-32 px-6 text-center">
+        <h1 className="text-[28px] font-semibold text-foreground">Topic not found</h1>
+        <Link to="/" className="mt-4 inline-block text-primary hover:underline text-[15px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           ← Back to Home
         </Link>
       </main>
@@ -18,40 +18,58 @@ const TopicPage = () => {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <Link
-        to="/"
-        className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Topics
-      </Link>
+    <main className="pt-32 pb-[64px] md:pb-[120px] px-6">
+      <div className="mx-auto max-w-[680px]">
+        <Link
+          to="/topics"
+          className="mb-10 inline-flex items-center gap-2 text-[13px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to Topics
+        </Link>
 
-      <div className="mb-8">
-        <span className="text-4xl">{topic.emoji}</span>
-        <h1 className="mt-3 text-3xl font-bold text-foreground md:text-4xl">
+        <h1 className="text-[36px] font-semibold text-foreground md:text-[48px]">
           {topic.title}
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">{topic.description}</p>
-      </div>
-
-      <div className="space-y-10">
-        {topic.sections.map((section, i) => (
-          <section key={i}>
-            <h2 className="mb-3 text-xl font-semibold text-primary">
-              {section.title}
-            </h2>
-            <p className="text-base leading-relaxed text-foreground/85">
-              {section.content}
-            </p>
-          </section>
-        ))}
-      </div>
-
-      <div className="mt-16 rounded-2xl border bg-accent/50 p-6">
-        <p className="text-sm text-muted-foreground">
-          <strong className="text-foreground">Disclaimer:</strong> This information is for educational purposes only and is not a substitute for professional medical advice. Always consult your doctor or a qualified health provider with questions about your health.
+        <p
+          className="mt-4 text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
+          {topic.description}
         </p>
+
+        <div className="mt-16 space-y-14">
+          {topic.sections.map((section, i) => (
+            <section key={i}>
+              <h2 className="mb-4 text-[24px] font-medium text-foreground">
+                {section.title}
+              </h2>
+              <p
+                className="text-[16px] leading-[1.8] text-foreground/80"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                {section.content}
+              </p>
+            </section>
+          ))}
+        </div>
+
+        <div
+          className="mt-20 p-8"
+          style={{
+            border: "0.5px solid hsl(var(--border))",
+            borderRadius: "12px",
+            backgroundColor: "hsl(var(--section-bg))",
+          }}
+        >
+          <p
+            className="text-[14px] leading-relaxed text-muted-foreground"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            <strong className="text-foreground">Disclaimer:</strong> This information is for educational purposes only and is not a substitute for professional medical advice. Always consult your doctor or a qualified health provider.
+          </p>
+        </div>
       </div>
     </main>
   );
