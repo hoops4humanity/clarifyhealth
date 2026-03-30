@@ -37,7 +37,7 @@ const TopicPage = () => {
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-10 flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.18em] text-primary"
+          className="mb-10 flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.18em] text-primary animate-fade-in"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
           <Link to="/topics" className="hover:underline">
@@ -48,24 +48,26 @@ const TopicPage = () => {
         </nav>
 
         {/* Hero */}
-        <h1 className="text-[44px] font-semibold leading-[1.1] text-foreground md:text-[56px]">
-          {topic.title}
-        </h1>
-        <p
-          className="mt-5 max-w-[680px] text-[18px] leading-relaxed text-muted-foreground md:text-[20px]"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          {topic.definition}
-        </p>
+        <div className="stagger-reveal">
+          <h1 className="text-[44px] font-semibold leading-[1.1] text-foreground md:text-[56px]">
+            {topic.title}
+          </h1>
+          <p
+            className="mt-5 max-w-[680px] text-[18px] leading-relaxed text-muted-foreground md:text-[20px]"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            {topic.definition}
+          </p>
+        </div>
 
         {/* Green rule */}
-        <div className="mt-10 mb-16 h-px w-full bg-primary/30" />
+        <div className="mt-10 mb-16 h-px w-full bg-primary/30 animate-fade-in" style={{ animationDelay: "200ms" }} />
 
         {/* Two-column layout */}
         <div className="flex flex-col gap-16 lg:flex-row lg:gap-20">
           {/* Main content — 65% */}
           <div className="w-full lg:w-[65%]">
-            <div className="space-y-14">
+            <div className="space-y-14 stagger-reveal">
               {topic.sections.map((section, i) => (
                 <section key={i}>
                   <span
@@ -92,11 +94,12 @@ const TopicPage = () => {
 
             {/* Disclaimer */}
             <div
-              className="mt-20 p-8"
+              className="mt-20 p-8 animate-fade-in"
               style={{
                 border: "0.5px solid hsl(var(--border))",
                 borderRadius: "12px",
                 backgroundColor: "hsl(var(--section-bg))",
+                animationDelay: "400ms",
               }}
             >
               <p
@@ -114,10 +117,11 @@ const TopicPage = () => {
           {/* Sidebar — 35% */}
           <aside className="w-full lg:w-[35%]">
             <div
-              className="lg:sticky lg:top-28 p-8"
+              className="lg:sticky lg:top-28 p-8 animate-fade-in"
               style={{
                 backgroundColor: "#e8f5ef",
                 borderRadius: "12px",
+                animationDelay: "300ms",
               }}
             >
               <h3
@@ -135,7 +139,10 @@ const TopicPage = () => {
                     key={i}
                     className="flex gap-3 text-[15px] leading-relaxed text-foreground"
                   >
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-primary" style={{ backgroundColor: "#d0ebdd" }}>
+                    <span
+                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-primary"
+                      style={{ backgroundColor: "#d0ebdd" }}
+                    >
                       {i + 1}
                     </span>
                     {q}
@@ -144,7 +151,7 @@ const TopicPage = () => {
               </ol>
               <button
                 onClick={handleCopy}
-                className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded py-3 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
+                className="mt-8 inline-flex w-full items-center justify-center gap-2 py-3 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-all press-scale"
                 style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "4px" }}
               >
                 {copied ? (
@@ -181,7 +188,7 @@ const TopicPage = () => {
           </p>
           <Link
             to="/ask"
-            className="mt-8 inline-flex items-center gap-2 rounded bg-primary px-8 py-3 text-[14px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 bg-primary px-8 py-3 text-[14px] font-medium text-primary-foreground hover:bg-primary/90 transition-all press-scale"
             style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "4px" }}
           >
             Ask a question

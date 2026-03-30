@@ -24,7 +24,7 @@ const Index = () => {
     <main>
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
-        <div className="mx-auto w-full max-w-[1100px]">
+        <div className="mx-auto w-full max-w-[1100px] stagger-reveal">
           <h1 className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]">
             Your health,
             <br />
@@ -49,13 +49,13 @@ const Index = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search a condition or ask a question..."
-                  className="h-12 w-full bg-transparent pl-11 pr-4 text-[15px] placeholder:text-muted-foreground focus:outline-none"
+                  className="h-12 w-full bg-transparent pl-11 pr-4 text-[15px] placeholder:text-muted-foreground focus:outline-none focus-glow transition-shadow"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 />
               </div>
               <button
                 type="submit"
-                className="h-12 px-6 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
+                className="h-12 px-6 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-all press-scale"
                 style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "0 3px 3px 0" }}
               >
                 Search
@@ -68,7 +68,7 @@ const Index = () => {
       {/* Stats strip */}
       <section className="px-6 py-[64px] md:py-[120px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
         <div className="mx-auto max-w-[1100px]">
-          <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 stagger-reveal">
             {stats.map((stat, i) => (
               <div
                 key={i}
@@ -101,19 +101,18 @@ const Index = () => {
       {/* Topics grid */}
       <section className="px-6 py-[64px] md:py-[120px]">
         <div className="mx-auto max-w-[1100px]">
-          <h2 className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px]">
+          <h2 className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in">
             Explore Topics
           </h2>
-          <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "1px" }}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
             {topics.map((topic) => (
               <Link
                 key={topic.id}
                 to={`/topics/${topic.id}`}
-                className="group flex flex-col justify-between p-8 transition-colors hover:bg-[hsl(var(--section-bg))]"
+                className="group flex flex-col justify-between p-8 transition-all hover:border-primary/60"
                 style={{
                   border: "0.5px solid hsl(var(--border))",
                   borderRadius: "12px",
-                  margin: "-0.25px",
                 }}
               >
                 <div>
@@ -130,9 +129,12 @@ const Index = () => {
                     {topic.description}
                   </p>
                 </div>
-                <div className="mt-6 flex items-center text-[13px] text-muted-foreground group-hover:text-primary transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <div
+                  className="mt-6 flex items-center text-[13px] text-muted-foreground group-hover:text-primary transition-colors"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   <span className="mr-2">Read more</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                 </div>
               </Link>
             ))}
