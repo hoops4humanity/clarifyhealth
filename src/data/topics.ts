@@ -366,9 +366,12 @@ export const topics: Topic[] = [
       "Could my symptoms be caused by something other than my thyroid?",
       "How often should I get my thyroid levels rechecked?",
     ],
+    sources: [
+      { name: "Mayo Clinic — Hypothyroidism", url: "https://www.mayoclinic.org/diseases-conditions/hypothyroidism/symptoms-causes/syc-20350284" },
+      { name: "Mayo Clinic — Hyperthyroidism", url: "https://www.mayoclinic.org/diseases-conditions/hyperthyroidism/symptoms-causes/syc-20373659" },
+      { name: "NIH MedlinePlus — Thyroid Diseases", url: "https://medlineplus.gov/thyroiddiseases.html" },
+    ],
   },
-  {
-    id: "acid-reflux",
     title: "Acid Reflux",
     definition: "When stomach acid flows backward into your esophagus, causing a burning sensation and potential damage over time.",
     description: "That burning feeling in your chest and how to manage it",
