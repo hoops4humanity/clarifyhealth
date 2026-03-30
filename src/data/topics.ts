@@ -213,9 +213,12 @@ export const topics: Topic[] = [
       "How long does treatment usually take to work?",
       "Are there things I can do right now at home to feel better?",
     ],
+    sources: [
+      { name: "NIH — Anxiety Disorders", url: "https://www.nimh.nih.gov/health/topics/anxiety-disorders" },
+      { name: "Mayo Clinic — Anxiety", url: "https://www.mayoclinic.org/diseases-conditions/anxiety/symptoms-causes/syc-20350961" },
+      { name: "NIH MedlinePlus — Anxiety", url: "https://medlineplus.gov/anxiety.html" },
+    ],
   },
-  {
-    id: "depression",
     title: "Depression",
     definition: "A medical condition that causes persistent sadness and loss of interest, affecting how you think, feel, and handle daily life.",
     description: "When sadness won't lift and everything feels heavy",
