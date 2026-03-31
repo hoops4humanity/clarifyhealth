@@ -109,7 +109,7 @@ serve(async (req) => {
     }
 
     const safeMode = ["diagnosis", "general", "wellness"].includes(mode) ? mode : "general";
-    const safeLang = language === "es" ? "es" : "en";
+    const safeLang = ["es", "ur", "hi", "ar"].includes(language) ? language : "en";
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
