@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, Leaf } from "lucide-react";
 import { getTopics } from "@/data/topics";
+import { getHolisticTopics } from "@/data/holistic-topics";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useReveal } from "@/hooks/use-reveal";
 import PageMeta from "@/components/PageMeta";
@@ -11,6 +12,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { lang, t } = useLanguage();
   const topics = getTopics(lang);
+  const holisticTopics = getHolisticTopics(lang);
 
   const stats = [
     { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[52px] md:text-[60px]" },
@@ -21,6 +23,7 @@ const Index = () => {
   const heroReveal = useReveal(0.1);
   const statsReveal = useReveal(0.15);
   const topicsReveal = useReveal(0.1);
+  const holisticReveal = useReveal(0.1);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,6 +168,72 @@ const Index = () => {
                 style={{
                   border: "0.5px solid hsl(var(--border))",
                   borderRadius: "12px",
+                }}
+              >
+                <div>
+                  <h3
+                    className="text-[22px] font-medium text-foreground"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {topic.title}
+                  </h3>
+                  <p
+                    className="mt-2 text-[14px] leading-relaxed text-muted-foreground"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {topic.description}
+                  </p>
+                </div>
+                <div
+                  className="mt-6 flex items-center text-muted-foreground group-hover:text-primary transition-colors"
+                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px", textTransform: "uppercase" }}
+                >
+                  <span className="mr-2">{t("home.readMore")}</span>
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Holistic & Natural Health section */}
+      <section className="grain-bg px-6 py-[80px] md:py-[144px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+        <div
+          ref={holisticReveal.ref}
+          className="mx-auto max-w-[1100px]"
+          style={{ opacity: holisticReveal.visible ? undefined : 0 }}
+        >
+          <div className={`flex items-center gap-3 mb-4 ${holisticReveal.visible ? "animate-fade-in" : ""}`}>
+            <Leaf className="h-5 w-5 text-primary" />
+            <span
+              className="font-semibold uppercase text-primary"
+              style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
+            >
+              {t("home.holistic.label")}
+            </span>
+          </div>
+          <h2
+            className={`mb-4 text-[32px] font-semibold text-foreground md:text-[40px] ${holisticReveal.visible ? "animate-fade-in" : ""}`}
+          >
+            {t("home.holistic.title")}
+          </h2>
+          <p
+            className={`mb-14 max-w-[600px] text-[16px] leading-relaxed text-muted-foreground ${holisticReveal.visible ? "animate-fade-in" : ""}`}
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            {t("home.holistic.sub")}
+          </p>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start ${holisticReveal.visible ? "stagger-reveal" : ""}`} style={{ gap: "16px" }}>
+            {holisticTopics.map((topic) => (
+              <Link
+                key={topic.id}
+                to={`/holistic/${topic.id}`}
+                className="group flex flex-col p-8 transition-all hover:border-primary/60"
+                style={{
+                  border: "0.5px solid hsl(var(--border))",
+                  borderRadius: "12px",
+                  backgroundColor: "hsl(var(--background))",
                 }}
               >
                 <div>

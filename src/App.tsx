@@ -14,6 +14,7 @@ import TopicsIndex from "./pages/TopicsIndex";
 import TopicPage from "./pages/TopicPage";
 import AskPage from "./pages/AskPage";
 import AboutPage from "./pages/AboutPage";
+import HolisticTopicPage from "./pages/HolisticTopicPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/topics/:id" element={<TopicPage />} />
               <Route path="/ask" element={<AskPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/holistic/:id" element={<HolisticTopicPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

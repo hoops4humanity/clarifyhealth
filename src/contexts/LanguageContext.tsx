@@ -42,6 +42,9 @@ const strings: Record<Language, Record<string, string>> = {
     "home.stat.source": "Sources: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
     "home.explore": "Explore Topics",
     "home.readMore": "Read more",
+    "home.holistic.label": "Evidence-Based Wellness",
+    "home.holistic.title": "Holistic & Natural Health",
+    "home.holistic.sub": "What does the research actually say? Each topic cites only peer-reviewed sources — PubMed, NIH, Harvard Health, and Mayo Clinic.",
     "home.meta.title": "Clarify Health — Your Health, in Plain English",
     "home.meta.desc": "Clear, trustworthy health education written in plain English. Understand diabetes, blood pressure, cholesterol, and more — no jargon, no confusion.",
 
@@ -133,6 +136,9 @@ const strings: Record<Language, Record<string, string>> = {
     "home.stat.source": "Fuentes: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
     "home.explore": "Explorar temas",
     "home.readMore": "Leer más",
+    "home.holistic.label": "Bienestar basado en evidencia",
+    "home.holistic.title": "Salud holística y natural",
+    "home.holistic.sub": "¿Qué dice realmente la investigación? Cada tema cita solo fuentes revisadas por pares — PubMed, NIH, Harvard Health y Mayo Clinic.",
     "home.meta.title": "Clarify Health — Tu salud, en español sencillo",
     "home.meta.desc": "Educación de salud clara y confiable escrita en español sencillo. Entiende la diabetes, presión arterial, colesterol y más — sin jerga ni confusión.",
 
