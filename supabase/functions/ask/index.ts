@@ -1,29 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import rateLimit from 'express-rate-limit';
-import Anthropic from '@anthropic-ai/sdk';
-import 'dotenv/config';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const app = express();
-app.use(express.json());
-
-const ALLOWED_ORIGINS = [
-  'http://localhost:8080',
-  'http://localhost:4173',
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
-app.use(cors({ origin: ALLOWED_ORIGINS }));
-
-const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "You've reached the hourly limit. Come back soon." },
-});
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 
 // ── System Prompts ──────────────────────────────────────────────────────────
 
@@ -93,60 +74,97 @@ FORMAT:
 ---
 This is general wellness information. For personalized advice, speak with your doctor.`;
 
-const PROMPTS = {
+const PROMPTS: Record<string, string> = {
   diagnosis: PROMPT_DIAGNOSIS,
   general: PROMPT_GENERAL,
   wellness: PROMPT_WELLNESS,
 };
 
-function buildSystemPrompt(mode, language) {
+function buildSystemPrompt(mode: string, language: string): string {
   const base = PROMPTS[mode] ?? PROMPTS.general;
-  const lang = language === 'es' ? 'Spanish' : 'English';
+  const lang = language === "es" ? "Spanish" : "English";
   return `${base}\n\nRespond in ${lang}.`;
 }
 
-// ── Route ───────────────────────────────────────────────────────────────────
-
-app.post('/api/ask', limiter, async (req, res) => {
-  const { question, mode, language } = req.body ?? {};
-
-  if (!question || typeof question !== 'string' || !question.trim()) {
-    return res.status(400).json({ error: 'Question is required.' });
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
   }
-  if (question.length > 2000) {
-    return res.status(400).json({ error: 'Please keep your input under 2,000 characters.' });
-  }
-
-  const safeMode = ['diagnosis', 'general', 'wellness'].includes(mode) ? mode : 'general';
-  const safeLang = language === 'es' ? 'es' : 'en';
 
   try {
-    const message = await client.messages.create({
-      model: 'claude-haiku-4-5',
-      max_tokens: 1024,
-      system: buildSystemPrompt(safeMode, safeLang),
-      messages: [{ role: 'user', content: question.trim() }],
+    const { question, mode, language } = await req.json();
+
+    // Validate input
+    if (!question || typeof question !== "string" || !question.trim()) {
+      return new Response(JSON.stringify({ error: "Question is required." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (question.length > 2000) {
+      return new Response(
+        JSON.stringify({ error: "Please keep your input under 2,000 characters." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const safeMode = ["diagnosis", "general", "wellness"].includes(mode) ? mode : "general";
+    const safeLang = language === "es" ? "es" : "en";
+
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) {
+      throw new Error("LOVABLE_API_KEY is not configured");
+    }
+
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: buildSystemPrompt(safeMode, safeLang) },
+          { role: "user", content: question.trim() },
+        ],
+      }),
     });
 
-    const textBlock = message.content.find((b) => b.type === 'text');
-    res.json({ answer: textBlock?.text ?? '' });
-  } catch (error) {
-    if (error instanceof Anthropic.AuthenticationError) {
-      console.error('Invalid Anthropic API key — check your .env file.');
-      res.status(500).json({ error: 'Something went wrong. Please try again.' });
-    } else if (error instanceof Anthropic.RateLimitError) {
-      res.status(429).json({ error: 'The AI service is busy right now. Please try again in a moment.' });
-    } else if (error instanceof Anthropic.APIError) {
-      console.error(`Anthropic API error ${error.status}:`, error.message);
-      res.status(500).json({ error: 'Something went wrong. Please try again.' });
-    } else {
-      console.error('Unexpected error:', error);
-      res.status(500).json({ error: 'Something went wrong. Please try again.' });
+    if (!response.ok) {
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "The AI service is busy right now. Please try again in a moment." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "AI service temporarily unavailable. Please try again later." }),
+          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      const errorText = await response.text();
+      console.error("AI gateway error:", response.status, errorText);
+      return new Response(
+        JSON.stringify({ error: "Something went wrong. Please try again." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
-  }
-});
 
-const PORT = process.env.API_PORT ?? 3001;
-app.listen(PORT, () => {
-  console.log(`API server running on http://localhost:${PORT}`);
+    const data = await response.json();
+    const answer = data.choices?.[0]?.message?.content ?? "";
+
+    return new Response(JSON.stringify({ answer }), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    console.error("ask error:", e);
+    const errorMessage = e instanceof Error ? e.message : "Unknown error";
+    return new Response(JSON.stringify({ error: "Something went wrong. Please try again." }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
 });

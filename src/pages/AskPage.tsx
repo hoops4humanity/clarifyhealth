@@ -115,21 +115,17 @@ const AskPage = () => {
     setError("");
 
     try {
-      const base = import.meta.env.VITE_API_URL ?? "";
-      const res = await fetch(`${base}/api/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error: fnError } = await supabase.functions.invoke("ask", {
+        body: {
           question: text,
           mode: getMode(tab, text),
           language: lang,
-        }),
+        },
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? t("ask.error") ?? "Something went wrong. Please try again.");
+      if (fnError) {
+        setError(t("ask.error") ?? "Something went wrong. Please try again.");
         return;
       }
 
