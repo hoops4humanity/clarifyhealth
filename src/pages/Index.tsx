@@ -126,7 +126,7 @@ const Index = () => {
             className="mt-10 text-center text-muted-foreground"
             style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", letterSpacing: "0.3px" }}
           >
-            Source: CDC / National Assessment of Adult Literacy
+            {t("home.stat.source")}
           </p>
         </div>
       </section>
