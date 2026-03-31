@@ -12,9 +12,9 @@ const Index = () => {
   const topics = getTopics(lang);
 
   const stats = [
-    { value: "10", label: t("home.stat.topics") },
-    { value: "40", label: t("home.stat.sections") },
-    { value: "100%", label: t("home.stat.jargon") },
+    { value: "88%", label: t("home.stat.topics") === "Topics Covered" ? "of American adults lack the skills to navigate the healthcare system" : "de los adultos estadounidenses carecen de las habilidades para navegar el sistema de salud", size: "text-[48px] md:text-[56px]" },
+    { value: "9 in 10", label: t("home.stat.sections") === "Sections of Content" ? "people struggle to understand everyday health information" : "personas tienen dificultades para comprender la información de salud cotidiana", size: "text-[52px] md:text-[64px]" },
+    { value: "$238B", label: t("home.stat.jargon") === "Jargon-Free" ? "lost annually in the US due to low health literacy" : "se pierden anualmente en EE.UU. debido a la baja alfabetización en salud", size: "text-[46px] md:text-[52px]" },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -42,9 +42,13 @@ const Index = () => {
           },
         }}
       />
+
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
-        <div className="mx-auto w-full max-w-[1100px] stagger-reveal">
+        <div className="mx-auto w-full max-w-[1100px] stagger-reveal pr-8 md:pr-[200px]">
+          {/* Editorial rule */}
+          <div className="w-[60px] h-[1px] bg-primary mb-8" />
+
           <h1
             className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]"
             style={{ letterSpacing: "-1px" }}
@@ -56,14 +60,14 @@ const Index = () => {
             {t("home.hero.line3")}
           </h1>
           <p
-            className="mt-6 max-w-[680px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
+            className="mt-6 max-w-[560px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             {t("home.hero.sub")}
           </p>
 
           {/* Search bar */}
-          <form onSubmit={handleSearch} className="mt-10 max-w-[680px]">
+          <form onSubmit={handleSearch} className="mt-10 max-w-[560px]">
             <div className="flex gap-0" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px" }}>
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -89,13 +93,13 @@ const Index = () => {
       </section>
 
       {/* Stats strip */}
-      <section className="grain-bg px-6 py-[64px] md:py-[120px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+      <section className="grain-bg px-6 py-[80px] md:py-[144px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
         <div className="mx-auto max-w-[1100px]">
           <div className="grid grid-cols-1 md:grid-cols-3 stagger-reveal">
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`flex flex-col items-center py-8 md:py-0 ${
+                className={`flex flex-col items-center py-10 md:py-0 ${
                   i < stats.length - 1 ? "md:border-r" : ""
                 }`}
                 style={{
@@ -104,38 +108,43 @@ const Index = () => {
                 }}
               >
                 <span
-                  className="text-[48px] font-semibold text-primary md:text-[56px]"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className={`${stat.size} font-semibold text-primary`}
+                  style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-1px" }}
                 >
                   {stat.value}
                 </span>
                 <span
-                  className="mt-2 text-[11px] uppercase text-muted-foreground"
-                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
+                  className="mt-3 max-w-[220px] text-center text-[13px] leading-snug text-muted-foreground"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   {stat.label}
                 </span>
               </div>
             ))}
           </div>
+          <p
+            className="mt-10 text-center text-muted-foreground"
+            style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", letterSpacing: "0.3px" }}
+          >
+            Source: CDC / National Assessment of Adult Literacy
+          </p>
         </div>
       </section>
 
       {/* Topics grid */}
-      <section className="px-6 py-[64px] md:py-[120px]">
+      <section className="px-6 py-[80px] md:py-[144px]">
         <div className="mx-auto max-w-[1100px]">
           <h2
-            className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in"
-            style={{ letterSpacing: "-0.5px" }}
+            className="mb-14 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in"
           >
             {t("home.explore")}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-reveal items-start" style={{ gap: "16px" }}>
             {topics.map((topic) => (
               <Link
                 key={topic.id}
                 to={`/topics/${topic.id}`}
-                className="group flex flex-col justify-between p-8 transition-all hover:border-primary/60"
+                className="group flex flex-col p-8 transition-all hover:border-primary/60"
                 style={{
                   border: "0.5px solid hsl(var(--border))",
                   borderRadius: "12px",
