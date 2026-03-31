@@ -80,9 +80,17 @@ const PROMPTS: Record<string, string> = {
   wellness: PROMPT_WELLNESS,
 };
 
+const LANG_NAMES: Record<string, string> = {
+  en: "English",
+  es: "Spanish",
+  ur: "Urdu",
+  hi: "Hindi",
+  ar: "Arabic",
+};
+
 function buildSystemPrompt(mode: string, language: string): string {
   const base = PROMPTS[mode] ?? PROMPTS.general;
-  const lang = language === "es" ? "Spanish" : "English";
+  const lang = LANG_NAMES[language] ?? "English";
   return `${base}\n\nRespond in ${lang}.`;
 }
 
