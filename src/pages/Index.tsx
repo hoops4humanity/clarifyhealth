@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, Leaf } from "lucide-react";
 import { getTopics } from "@/data/topics";
+import { getHolisticTopics } from "@/data/holistic-topics";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useReveal } from "@/hooks/use-reveal";
 import PageMeta from "@/components/PageMeta";
