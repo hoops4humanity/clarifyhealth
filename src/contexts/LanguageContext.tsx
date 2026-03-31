@@ -136,6 +136,9 @@ const strings: Record<Language, Record<string, string>> = {
     "home.stat.source": "Fuentes: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
     "home.explore": "Explorar temas",
     "home.readMore": "Leer más",
+    "home.holistic.label": "Bienestar basado en evidencia",
+    "home.holistic.title": "Salud holística y natural",
+    "home.holistic.sub": "¿Qué dice realmente la investigación? Cada tema cita solo fuentes revisadas por pares — PubMed, NIH, Harvard Health y Mayo Clinic.",
     "home.meta.title": "Clarify Health — Tu salud, en español sencillo",
     "home.meta.desc": "Educación de salud clara y confiable escrita en español sencillo. Entiende la diabetes, presión arterial, colesterol y más — sin jerga ni confusión.",
 
