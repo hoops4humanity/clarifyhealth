@@ -44,6 +44,7 @@ const App = () => (
               <Route path="/topics/:id" element={<TopicPage />} />
               <Route path="/ask" element={<AskPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/holistic/:id" element={<HolisticTopicPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
