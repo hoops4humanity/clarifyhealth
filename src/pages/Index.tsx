@@ -13,9 +13,9 @@ const Index = () => {
   const topics = getTopics(lang);
 
   const stats = [
-    { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[48px] md:text-[56px]" },
-    { value: t("home.stat2.value"), label: t("home.stat2.label"), size: "text-[52px] md:text-[64px]" },
-    { value: t("home.stat3.value"), label: t("home.stat3.label"), size: "text-[46px] md:text-[52px]" },
+    { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[52px] md:text-[60px]" },
+    { value: t("home.stat2.value"), label: t("home.stat2.label"), size: "text-[52px] md:text-[60px]" },
+    { value: t("home.stat3.value"), label: t("home.stat3.label"), size: "text-[52px] md:text-[60px]" },
   ];
 
   const heroReveal = useReveal(0.1);
