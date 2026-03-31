@@ -19,6 +19,13 @@ export interface Topic {
   sources: TopicSource[];
 }
 
+import type { Language } from "@/contexts/LanguageContext";
+import { topicsEs } from "./topics-es";
+
+export function getTopics(lang: Language): Topic[] {
+  return lang === "es" ? topicsEs : topics;
+}
+
 export const topics: Topic[] = [
   {
     id: "type-2-diabetes",

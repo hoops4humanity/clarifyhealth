@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PageMetaProps {
   title: string;
@@ -11,6 +12,8 @@ interface PageMetaProps {
 const BASE_URL = "https://clarifyhealth.lovable.app";
 
 const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaProps) => {
+  const { lang } = useLanguage();
+
   useEffect(() => {
     document.title = title;
 
@@ -29,14 +32,17 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
     setMeta("property", "og:description", description);
     setMeta("property", "og:url", `${BASE_URL}${canonical}`);
     setMeta("property", "og:type", "website");
+    setMeta("property", "og:locale", lang === "es" ? "es_ES" : "en_US");
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("property", "og:site_name", "Clarify Health");
 
     if (ogImage) {
       setMeta("property", "og:image", ogImage);
       setMeta("name", "twitter:image", ogImage);
     }
+    setMeta("name", "theme-color", "#1a6b4a");
 
     // Canonical
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
@@ -47,6 +53,25 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
     }
     link.setAttribute("href", `${BASE_URL}${canonical}`);
 
+    // hreflang tags
+    const hreflangs = [
+      { lang: "en", href: `${BASE_URL}${canonical}` },
+      { lang: "es", href: `${BASE_URL}${canonical}` },
+      { lang: "x-default", href: `${BASE_URL}${canonical}` },
+    ];
+
+    // Remove old hreflang tags
+    document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
+
+    for (const hl of hreflangs) {
+      const hlLink = document.createElement("link");
+      hlLink.setAttribute("rel", "alternate");
+      hlLink.setAttribute("hreflang", hl.lang);
+      hlLink.setAttribute("href", hl.href);
+      hlLink.setAttribute("data-hreflang", "true");
+      document.head.appendChild(hlLink);
+    }
+
     // JSON-LD
     const existingScript = document.querySelector('script[data-page-jsonld]');
     if (existingScript) existingScript.remove();
@@ -54,15 +79,20 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
       const script = document.createElement("script");
       script.type = "application/ld+json";
       script.setAttribute("data-page-jsonld", "true");
-      script.textContent = JSON.stringify({ "@context": "https://schema.org", ...jsonLd });
+      script.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        inLanguage: lang === "es" ? "es" : "en",
+        ...jsonLd,
+      });
       document.head.appendChild(script);
     }
 
     return () => {
       const s = document.querySelector('script[data-page-jsonld]');
       if (s) s.remove();
+      document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
     };
-  }, [title, description, canonical, ogImage, jsonLd]);
+  }, [title, description, canonical, ogImage, jsonLd, lang]);
 
   return null;
 };

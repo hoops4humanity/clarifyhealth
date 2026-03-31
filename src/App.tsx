@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -27,27 +28,29 @@ const ScrollToTop = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        
-        <ScrollToTop />
-        <Header />
-        <div className="animate-page-enter">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/topics" element={<TopicsIndex />} />
-            <Route path="/topics/:id" element={<TopicPage />} />
-            <Route path="/ask" element={<AskPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-        <Footer />
-        <FloatingAskButton />
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+
+          <ScrollToTop />
+          <Header />
+          <div className="animate-page-enter">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/topics" element={<TopicsIndex />} />
+              <Route path="/topics/:id" element={<TopicPage />} />
+              <Route path="/ask" element={<AskPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          <Footer />
+          <FloatingAskButton />
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 

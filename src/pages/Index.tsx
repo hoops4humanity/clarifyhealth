@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
-import { topics } from "@/data/topics";
+import { getTopics } from "@/data/topics";
+import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
-
-const stats = [
-  { value: "10", label: "Health topics explained" },
-  { value: "40", label: "Sections of plain-language content" },
-  { value: "100%", label: "Jargon-free" },
-];
 
 const Index = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const { lang, t } = useLanguage();
+  const topics = getTopics(lang);
+
+  const stats = [
+    { value: "10", label: t("home.stat.topics") },
+    { value: "40", label: t("home.stat.sections") },
+    { value: "100%", label: t("home.stat.jargon") },
+  ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +26,22 @@ const Index = () => {
 
   return (
     <main>
-      <PageMeta title="Clarify Health — Your Health, in Plain English" description="Clear, trustworthy health education written in plain English. Understand diabetes, blood pressure, cholesterol, and more — no jargon, no confusion." canonical="/" />
+      <PageMeta
+        title={t("home.meta.title")}
+        description={t("home.meta.desc")}
+        canonical="/"
+        jsonLd={{
+          "@type": "WebSite",
+          name: "Clarify Health",
+          url: "https://clarifyhealth.lovable.app",
+          description: t("home.meta.desc"),
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://clarifyhealth.lovable.app/ask?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }}
+      />
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
         <div className="mx-auto w-full max-w-[1100px] stagger-reveal">
@@ -31,17 +49,17 @@ const Index = () => {
             className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]"
             style={{ letterSpacing: "-1px" }}
           >
-            Your health,
+            {t("home.hero.line1")}
             <br />
-            finally
+            {t("home.hero.line2")}
             <br />
-            makes sense.
+            {t("home.hero.line3")}
           </h1>
           <p
             className="mt-6 max-w-[680px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Clear, trustworthy explanations of common health conditions — written so anyone can understand.
+            {t("home.hero.sub")}
           </p>
 
           {/* Search bar */}
@@ -53,7 +71,7 @@ const Index = () => {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search a condition or ask a question..."
+                  placeholder={t("home.search.placeholder")}
                   className="h-12 w-full bg-transparent pl-11 pr-4 text-[15px] placeholder:text-muted-foreground focus:outline-none focus-glow transition-shadow"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 />
@@ -63,7 +81,7 @@ const Index = () => {
                 className="h-12 px-6 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-all press-scale"
                 style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "0 3px 3px 0" }}
               >
-                Search
+                {t("home.search.button")}
               </button>
             </div>
           </form>
@@ -110,7 +128,7 @@ const Index = () => {
             className="mb-12 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in"
             style={{ letterSpacing: "-0.5px" }}
           >
-            Explore Topics
+            {t("home.explore")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
             {topics.map((topic) => (
@@ -141,7 +159,7 @@ const Index = () => {
                   className="mt-6 flex items-center text-muted-foreground group-hover:text-primary transition-colors"
                   style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px", textTransform: "uppercase" }}
                 >
-                  <span className="mr-2">Read more</span>
+                  <span className="mr-2">{t("home.readMore")}</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                 </div>
               </Link>

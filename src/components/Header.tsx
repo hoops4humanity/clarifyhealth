@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { to: "/topics", label: "Topics" },
-  { to: "/ask", label: "Ask" },
-  { to: "/about", label: "About" },
-];
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { lang, setLang, t } = useLanguage();
+
+  const navLinks = [
+    { to: "/topics", label: t("nav.topics") },
+    { to: "/ask", label: t("nav.ask") },
+    { to: "/about", label: t("nav.about") },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -19,12 +21,10 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile nav on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Prevent scroll when overlay open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -63,6 +63,25 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+
+            {/* Language toggle */}
+            <div className="flex gap-0.5 ml-2" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px", padding: "2px" }}>
+              {(["en", "es"] as Language[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider transition-all"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    borderRadius: "3px",
+                    background: lang === l ? "hsl(var(--primary))" : "transparent",
+                    color: lang === l ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
+                  }}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
           </nav>
 
           {/* Mobile toggle */}
@@ -99,6 +118,28 @@ const Header = () => {
               </Link>
             ))}
           </nav>
+
+          {/* Mobile language toggle */}
+          <div
+            className="nav-overlay-link mt-10 flex gap-1"
+            style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "6px", padding: "3px", animationDelay: `${navLinks.length * 80}ms` }}
+          >
+            {(["en", "es"] as Language[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className="px-4 py-2 text-[14px] font-semibold uppercase tracking-wider transition-all"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  borderRadius: "4px",
+                  background: lang === l ? "hsl(var(--primary))" : "transparent",
+                  color: lang === l ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
+                }}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </>
