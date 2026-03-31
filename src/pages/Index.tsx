@@ -23,6 +23,7 @@ const Index = () => {
   const heroReveal = useReveal(0.1);
   const statsReveal = useReveal(0.15);
   const topicsReveal = useReveal(0.1);
+  const holisticReveal = useReveal(0.1);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
