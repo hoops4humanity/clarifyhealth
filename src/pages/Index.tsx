@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
 import { getTopics } from "@/data/topics";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useReveal } from "@/hooks/use-reveal";
 import PageMeta from "@/components/PageMeta";
 
 const Index = () => {
@@ -12,10 +13,14 @@ const Index = () => {
   const topics = getTopics(lang);
 
   const stats = [
-    { value: "88%", label: t("home.stat.topics") === "Topics Covered" ? "of American adults lack the skills to navigate the healthcare system" : "de los adultos estadounidenses carecen de las habilidades para navegar el sistema de salud", size: "text-[48px] md:text-[56px]" },
-    { value: "9 in 10", label: t("home.stat.sections") === "Sections of Content" ? "people struggle to understand everyday health information" : "personas tienen dificultades para comprender la información de salud cotidiana", size: "text-[52px] md:text-[64px]" },
-    { value: "$238B", label: t("home.stat.jargon") === "Jargon-Free" ? "lost annually in the US due to low health literacy" : "se pierden anualmente en EE.UU. debido a la baja alfabetización en salud", size: "text-[46px] md:text-[52px]" },
+    { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[48px] md:text-[56px]" },
+    { value: t("home.stat2.value"), label: t("home.stat2.label"), size: "text-[52px] md:text-[64px]" },
+    { value: t("home.stat3.value"), label: t("home.stat3.label"), size: "text-[46px] md:text-[52px]" },
   ];
+
+  const heroReveal = useReveal(0.1);
+  const statsReveal = useReveal(0.15);
+  const topicsReveal = useReveal(0.1);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +50,11 @@ const Index = () => {
 
       {/* Hero — full viewport */}
       <section className="flex min-h-screen flex-col justify-center px-6">
-        <div className="mx-auto w-full max-w-[1100px] stagger-reveal pr-8 md:pr-[200px]">
+        <div
+          ref={heroReveal.ref}
+          className={`mx-auto w-full max-w-[1100px] pr-8 md:pr-[200px] ${heroReveal.visible ? "stagger-reveal" : ""}`}
+          style={{ opacity: heroReveal.visible ? undefined : 0 }}
+        >
           {/* Editorial rule */}
           <div className="w-[60px] h-[1px] bg-primary mb-8" />
 
@@ -94,8 +103,12 @@ const Index = () => {
 
       {/* Stats strip */}
       <section className="grain-bg px-6 py-[80px] md:py-[144px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
-        <div className="mx-auto max-w-[1100px]">
-          <div className="grid grid-cols-1 md:grid-cols-3 stagger-reveal">
+        <div
+          ref={statsReveal.ref}
+          className="mx-auto max-w-[1100px]"
+          style={{ opacity: statsReveal.visible ? undefined : 0 }}
+        >
+          <div className={`grid grid-cols-1 md:grid-cols-3 ${statsReveal.visible ? "stagger-reveal" : ""}`}>
             {stats.map((stat, i) => (
               <div
                 key={i}
@@ -126,20 +139,24 @@ const Index = () => {
             className="mt-10 text-center text-muted-foreground"
             style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", letterSpacing: "0.3px" }}
           >
-            Source: CDC / National Assessment of Adult Literacy
+            {t("home.stat.source")}
           </p>
         </div>
       </section>
 
       {/* Topics grid */}
       <section className="px-6 py-[80px] md:py-[144px]">
-        <div className="mx-auto max-w-[1100px]">
+        <div
+          ref={topicsReveal.ref}
+          className="mx-auto max-w-[1100px]"
+          style={{ opacity: topicsReveal.visible ? undefined : 0 }}
+        >
           <h2
-            className="mb-14 text-[32px] font-semibold text-foreground md:text-[40px] animate-fade-in"
+            className={`mb-14 text-[32px] font-semibold text-foreground md:text-[40px] ${topicsReveal.visible ? "animate-fade-in" : ""}`}
           >
             {t("home.explore")}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-reveal items-start" style={{ gap: "16px" }}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start ${topicsReveal.visible ? "stagger-reveal" : ""}`} style={{ gap: "16px" }}>
             {topics.map((topic) => (
               <Link
                 key={topic.id}
