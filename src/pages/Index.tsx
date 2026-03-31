@@ -127,7 +127,7 @@ const Index = () => {
                   {stat.value}
                 </span>
                 <span
-                  className="mt-3 max-w-[220px] text-center text-[13px] leading-snug text-muted-foreground"
+                  className="mt-3 max-w-[240px] text-center text-[14px] leading-snug text-foreground"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   {stat.label}
