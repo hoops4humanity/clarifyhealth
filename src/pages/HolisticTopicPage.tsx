@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight, Check, Copy, AlertTriangle } from "lucide-react";
-import { getHolisticTopics, HOLISTIC_DISCLAIMER_EN, HOLISTIC_DISCLAIMER_ES } from "@/data/holistic-topics";
+import { getHolisticTopics, HOLISTIC_DISCLAIMERS } from "@/data/holistic-topics";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 
@@ -11,7 +11,7 @@ const HolisticTopicPage = () => {
   const topics = getHolisticTopics(lang);
   const topic = topics.find((tp) => tp.id === id);
   const [copied, setCopied] = useState(false);
-  const disclaimer = lang === "es" ? HOLISTIC_DISCLAIMER_ES : HOLISTIC_DISCLAIMER_EN;
+  const disclaimer = HOLISTIC_DISCLAIMERS[lang] ?? HOLISTIC_DISCLAIMERS.en;
 
   const handleCopy = () => {
     if (!topic) return;

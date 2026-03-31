@@ -32,7 +32,8 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
     setMeta("property", "og:description", description);
     setMeta("property", "og:url", `${BASE_URL}${canonical}`);
     setMeta("property", "og:type", "website");
-    setMeta("property", "og:locale", lang === "es" ? "es_ES" : "en_US");
+    const localeMap: Record<string, string> = { en: "en_US", es: "es_ES", ur: "ur_PK", hi: "hi_IN", ar: "ar_SA" };
+    setMeta("property", "og:locale", localeMap[lang] ?? "en_US");
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:card", "summary_large_image");
@@ -57,6 +58,9 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
     const hreflangs = [
       { lang: "en", href: `${BASE_URL}${canonical}` },
       { lang: "es", href: `${BASE_URL}${canonical}` },
+      { lang: "ur", href: `${BASE_URL}${canonical}` },
+      { lang: "hi", href: `${BASE_URL}${canonical}` },
+      { lang: "ar", href: `${BASE_URL}${canonical}` },
       { lang: "x-default", href: `${BASE_URL}${canonical}` },
     ];
 
@@ -81,7 +85,7 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
       script.setAttribute("data-page-jsonld", "true");
       script.textContent = JSON.stringify({
         "@context": "https://schema.org",
-        inLanguage: lang === "es" ? "es" : "en",
+        inLanguage: lang,
         ...jsonLd,
       });
       document.head.appendChild(script);

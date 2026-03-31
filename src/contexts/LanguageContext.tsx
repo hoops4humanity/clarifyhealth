@@ -1,7 +1,10 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from "react";
 import { trackLanguageChange } from "@/lib/analytics";
 
-export type Language = "en" | "es";
+export type Language = "en" | "es" | "ur" | "hi" | "ar";
+
+/** Languages that use right-to-left script */
+export const RTL_LANGUAGES: Language[] = ["ur", "ar"];
 
 interface LanguageContextValue {
   lang: Language;
@@ -102,6 +105,15 @@ const strings: Record<Language, Record<string, string>> = {
     "about.meta.title": "About Clarify Health — Our Mission",
     "about.meta.desc": "Built by a high school student in NJ to help people understand their health. Clear, honest information written so anyone can understand.",
 
+    // Holistic
+    "holistic.scienceTitle": "What the Science Says",
+    "holistic.breadcrumbHome": "Home",
+    "holistic.breadcrumbHolistic": "Holistic Health",
+    "holistic.disclaimer": "Disclaimer:",
+    "holistic.keyTakeaways": "Key Takeaways",
+    "holistic.copyTakeaways": "Copy key takeaways",
+    "topic.explainedSuffix": "Explained Simply",
+
     // 404
     "404.title": "404",
     "404.message": "Oops! Page not found",
@@ -196,6 +208,15 @@ const strings: Record<Language, Record<string, string>> = {
     "about.meta.title": "Acerca de Clarify Health — Nuestra misión",
     "about.meta.desc": "Creado por un estudiante de secundaria en NJ para ayudar a las personas a entender su salud. Información clara y honesta escrita para que cualquiera la entienda.",
 
+    // Holistic
+    "holistic.scienceTitle": "Lo que dice la ciencia",
+    "holistic.breadcrumbHome": "Inicio",
+    "holistic.breadcrumbHolistic": "Salud holística",
+    "holistic.disclaimer": "Aviso:",
+    "holistic.keyTakeaways": "Puntos clave",
+    "holistic.copyTakeaways": "Copiar puntos clave",
+    "topic.explainedSuffix": "Explicado",
+
     // 404
     "404.title": "404",
     "404.message": "¡Ups! Página no encontrada",
@@ -204,15 +225,308 @@ const strings: Record<Language, Record<string, string>> = {
     // Floating button
     "fab.label": "Haz una pregunta",
   },
+  ur: {
+    // Nav / global
+    "nav.topics": "موضوعات",
+    "nav.ask": "پوچھیں",
+    "nav.about": "ہمارے بارے میں",
+    "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
+
+    // Homepage
+    "home.hero.line1": "آپ کی صحت،",
+    "home.hero.line2": "آخرکار",
+    "home.hero.line3": "سمجھ آئے۔",
+    "home.hero.sub": "عام صحت کے مسائل کی واضح اور قابل اعتماد وضاحتیں — جو کوئی بھی سمجھ سکے۔",
+    "home.search.placeholder": "کوئی بیماری تلاش کریں یا سوال پوچھیں...",
+    "home.search.button": "تلاش کریں",
+    "home.stat.topics": "صحت کے موضوعات کی وضاحت",
+    "home.stat.sections": "آسان زبان میں حصے",
+    "home.stat.jargon": "طبی اصطلاحات سے پاک",
+    "home.stat1.value": "88%",
+    "home.stat1.label": "امریکی بالغوں میں صحت کے نظام کو سمجھنے کی صلاحیت کی کمی ہے",
+    "home.stat2.value": "10 میں 9",
+    "home.stat2.label": "لوگوں کو روزمرہ صحت کی معلومات سمجھنے میں مشکل ہوتی ہے",
+    "home.stat3.value": "$238 ارب",
+    "home.stat3.label": "صحت کی ناخواندگی کی وجہ سے امریکہ میں سالانہ نقصان",
+    "home.stat.source": "ذرائع: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
+    "home.explore": "موضوعات دیکھیں",
+    "home.readMore": "مزید پڑھیں",
+    "home.holistic.label": "شواہد پر مبنی تندرستی",
+    "home.holistic.title": "مکمل اور قدرتی صحت",
+    "home.holistic.sub": "تحقیق اصل میں کیا کہتی ہے؟ ہر موضوع صرف تسلیم شدہ ذرائع کا حوالہ دیتا ہے — PubMed، NIH، Harvard Health، اور Mayo Clinic۔",
+    "home.meta.title": "Clarify Health — آپ کی صحت، آسان زبان میں",
+    "home.meta.desc": "واضح، قابل اعتماد صحت کی تعلیم آسان اردو میں۔ ذیابیطس، بلڈ پریشر، کولیسٹرول اور بہت کچھ سمجھیں — بغیر الجھن کے۔",
+
+    // Topics index
+    "topics.title": "صحت کے موضوعات",
+    "topics.sub": "کسی بھی موضوع کو دبائیں اور آسان وضاحت پڑھیں۔",
+    "topics.meta.title": "صحت کے موضوعات | Clarify Health",
+    "topics.meta.desc": "آسان اردو میں 10 عام صحت کے مسائل کی وضاحت۔ ذیابیطس، بلڈ پریشر، کولیسٹرول، دمہ، اضطراب اور مزید۔",
+
+    // Topic detail
+    "topic.backToTopics": "موضوعات",
+    "topic.doctorQuestions": "اپنے ڈاکٹر سے پوچھنے کے 5 سوالات",
+    "topic.copy": "سوالات کاپی کریں",
+    "topic.copied": "کاپی ہو گیا!",
+    "topic.sourcesDisclaimer": "Clarify Health قابل اعتماد طبی ذرائع سے معلومات کو آسان بناتا ہے۔ ہمیشہ اپنے ڈاکٹر سے مشورہ کریں۔",
+    "topic.sourcesTitle": "ذرائع اور مزید پڑھائی",
+    "topic.disclaimer": "یہ معلومات صرف تعلیمی مقاصد کے لیے ہیں اور پیشہ ورانہ طبی مشورے کا متبادل نہیں ہیں۔ ہمیشہ اپنے ڈاکٹر سے مشورہ کریں۔",
+    "topic.stillHaveQuestions": "ابھی بھی سوالات ہیں؟",
+    "topic.cta.sub": "کوئی بھی صحت کا سوال لکھیں اور واضح جواب حاصل کریں۔",
+    "topic.cta.button": "سوال پوچھیں",
+    "topic.notFound": "موضوع نہیں ملا",
+    "topic.backLink": "← موضوعات پر واپس",
+
+    // Ask page
+    "ask.heading.ask1": "اپنی صحت کے بارے میں",
+    "ask.heading.ask2": "کچھ بھی پوچھیں۔",
+    "ask.heading.diag1": "اپنی تشخیص",
+    "ask.heading.diag2": "سمجھیں۔",
+    "ask.sub.ask": "سیکنڈوں میں آسان زبان میں جواب حاصل کریں۔ بغیر اصطلاحات، بغیر فیصلے کے۔",
+    "ask.sub.diag": "اپنے ڈاکٹر نے جو بتایا وہ لکھیں۔ ہم آسان زبان میں سمجھائیں گے۔",
+    "ask.tab.ask": "سوال پوچھیں",
+    "ask.tab.diagnosis": "تشخیص سمجھیں",
+    "ask.placeholder.ask": "اپنا صحت کا سوال یہاں لکھیں...",
+    "ask.placeholder.diag": "اپنی تشخیص، لیب رزلٹ، یا ڈاکٹر کی ہدایات یہاں لکھیں...",
+    "ask.submit.ask": "جواب حاصل کریں",
+    "ask.submit.diag": "مجھے سمجھائیں",
+    "ask.loading": "واضح جواب تلاش ہو رہا ہے...",
+    "ask.rateLimit": "آپ نے فی گھنٹہ حد پوری کر لی ہے۔ جلد واپس آئیں۔",
+    "ask.recentQuestions": "حالیہ سوالات",
+    "ask.meta.title": "صحت کا سوال پوچھیں | Clarify Health",
+    "ask.meta.desc": "کوئی بھی صحت کا سوال لکھیں اور سیکنڈوں میں آسان جواب حاصل کریں۔ بغیر اصطلاحات، بغیر فیصلے کے۔",
+    "ask.example.cholesterol": "ہائی کولیسٹرول کا کیا مطلب ہے؟",
+    "ask.example.anxiety": "اضطراب کا علاج کیسے ہوتا ہے؟",
+    "ask.example.sleep": "میں بہتر نیند کیسے لے سکتا ہوں؟",
+    "ask.example.a1c": "میرا A1C 7.2% ہے",
+    "ask.example.hypertension": "ڈاکٹر نے کہا مجھے ہائی بلڈ پریشر ہے",
+    "ask.example.tsh": "لیب رزلٹ میں TSH 6.5 ہے",
+
+    // About
+    "about.title": "ہمارے بارے میں",
+    "about.p1": "Clarify Health نیو جرسی کے ایک ہائی اسکول طالب علم نے بنایا جس نے دیکھا کہ جب لوگوں کو نئی تشخیص ملتی ہے تو آن لائن معلومات اکثر مشکل، طبی اصطلاحات سے بھری اور بعض اوقات خوفناک ہوتی ہیں۔",
+    "about.p2": "یہ سائٹ اس لیے موجود ہے کیونکہ ہر کسی کو اپنی صحت سمجھنے کا حق ہے۔ صرف ڈاکٹر اور نرسیں نہیں — ہر کوئی۔ آپ کی دادی۔ آپ کا پڑوسی۔ وہ شخص جو ابھی ویٹنگ روم میں بیٹھا ہے۔",
+    "about.p3": "اس سائٹ کا ہر مضمون روزمرہ آسان زبان میں لکھا گیا ہے۔ بغیر وضاحت کے کوئی طبی اصطلاح نہیں۔ آپ کے پہلے سے علم کے بارے میں کوئی فرض نہیں۔ بس واضح، ایماندارانہ معلومات۔",
+    "about.disclaimer": "Clarify Health ایک تعلیمی وسیلہ ہے، پیشہ ورانہ طبی مشورے کا متبادل نہیں۔ ہمیشہ اپنے ڈاکٹر سے مشورہ کریں۔",
+    "about.meta.title": "Clarify Health کے بارے میں — ہمارا مشن",
+    "about.meta.desc": "NJ کے ایک ہائی اسکول طالب علم نے لوگوں کو ان کی صحت سمجھنے میں مدد کے لیے بنایا۔ واضح، ایماندارانہ معلومات جو کوئی بھی سمجھ سکے۔",
+
+    // 404
+    "404.title": "404",
+    "404.message": "اوہو! صفحہ نہیں ملا",
+    "404.link": "ہوم پیج پر واپس جائیں",
+
+    // Holistic
+    "holistic.scienceTitle": "سائنس کیا کہتی ہے",
+    "holistic.breadcrumbHome": "ہوم",
+    "holistic.breadcrumbHolistic": "مکمل صحت",
+    "holistic.disclaimer": "اعلان:",
+    "holistic.keyTakeaways": "اہم نکات",
+    "holistic.copyTakeaways": "اہم نکات کاپی کریں",
+    "topic.explainedSuffix": "آسان وضاحت",
+
+    // Floating button
+    "fab.label": "سوال پوچھیں",
+  },
+  hi: {
+    // Nav / global
+    "nav.topics": "विषय",
+    "nav.ask": "पूछें",
+    "nav.about": "हमारे बारे में",
+    "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
+
+    // Homepage
+    "home.hero.line1": "आपकी सेहत,",
+    "home.hero.line2": "आखिरकार",
+    "home.hero.line3": "समझ आए।",
+    "home.hero.sub": "आम स्वास्थ्य स्थितियों की स्पष्ट और विश्वसनीय व्याख्याएं — जो कोई भी समझ सके।",
+    "home.search.placeholder": "कोई बीमारी खोजें या सवाल पूछें...",
+    "home.search.button": "खोजें",
+    "home.stat.topics": "स्वास्थ्य विषयों की व्याख्या",
+    "home.stat.sections": "सरल भाषा में अनुभाग",
+    "home.stat.jargon": "चिकित्सा शब्दावली से मुक्त",
+    "home.stat1.value": "88%",
+    "home.stat1.label": "अमेरिकी वयस्कों में स्वास्थ्य प्रणाली को समझने की क्षमता की कमी है",
+    "home.stat2.value": "10 में 9",
+    "home.stat2.label": "लोगों को रोजमर्रा की स्वास्थ्य जानकारी समझने में कठिनाई होती है",
+    "home.stat3.value": "$238 अरब",
+    "home.stat3.label": "कम स्वास्थ्य साक्षरता के कारण अमेरिका में सालाना नुकसान",
+    "home.stat.source": "स्रोत: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
+    "home.explore": "विषय देखें",
+    "home.readMore": "और पढ़ें",
+    "home.holistic.label": "प्रमाण-आधारित कल्याण",
+    "home.holistic.title": "समग्र और प्राकृतिक स्वास्थ्य",
+    "home.holistic.sub": "शोध वास्तव में क्या कहता है? हर विषय केवल सहकर्मी-समीक्षित स्रोतों का हवाला देता है — PubMed, NIH, Harvard Health, और Mayo Clinic।",
+    "home.meta.title": "Clarify Health — आपकी सेहत, सरल हिंदी में",
+    "home.meta.desc": "स्पष्ट, विश्वसनीय स्वास्थ्य शिक्षा सरल हिंदी में। मधुमेह, रक्तचाप, कोलेस्ट्रॉल और बहुत कुछ समझें — बिना उलझन के।",
+
+    // Topics index
+    "topics.title": "स्वास्थ्य विषय",
+    "topics.sub": "किसी भी विषय को दबाएं और सरल व्याख्या पढ़ें।",
+    "topics.meta.title": "स्वास्थ्य विषय | Clarify Health",
+    "topics.meta.desc": "सरल हिंदी में 10 आम स्वास्थ्य स्थितियों की व्याख्या। मधुमेह, रक्तचाप, कोलेस्ट्रॉल, अस्थमा, चिंता और बहुत कुछ।",
+
+    // Topic detail
+    "topic.backToTopics": "विषय",
+    "topic.doctorQuestions": "अपने डॉक्टर से पूछने के 5 सवाल",
+    "topic.copy": "सवाल कॉपी करें",
+    "topic.copied": "कॉपी हो गया!",
+    "topic.sourcesDisclaimer": "Clarify Health विश्वसनीय चिकित्सा स्रोतों से जानकारी को सरल बनाता है। हमेशा अपने डॉक्टर से सलाह लें।",
+    "topic.sourcesTitle": "स्रोत और अतिरिक्त पठन",
+    "topic.disclaimer": "यह जानकारी केवल शैक्षिक उद्देश्यों के लिए है और पेशेवर चिकित्सा सलाह का विकल्प नहीं है। हमेशा अपने डॉक्टर से सलाह लें।",
+    "topic.stillHaveQuestions": "अभी भी सवाल हैं?",
+    "topic.cta.sub": "कोई भी स्वास्थ्य सवाल लिखें और स्पष्ट जवाब पाएं।",
+    "topic.cta.button": "सवाल पूछें",
+    "topic.notFound": "विषय नहीं मिला",
+    "topic.backLink": "← विषयों पर वापस",
+
+    // Ask page
+    "ask.heading.ask1": "अपनी सेहत के बारे में",
+    "ask.heading.ask2": "कुछ भी पूछें।",
+    "ask.heading.diag1": "अपनी जांच रिपोर्ट",
+    "ask.heading.diag2": "समझें।",
+    "ask.sub.ask": "सेकंडों में सरल भाषा में जवाब पाएं। बिना शब्दावली, बिना आलोचना के।",
+    "ask.sub.diag": "आपके डॉक्टर ने जो बताया वह लिखें। हम सरल भाषा में समझाएंगे।",
+    "ask.tab.ask": "सवाल पूछें",
+    "ask.tab.diagnosis": "जांच रिपोर्ट समझें",
+    "ask.placeholder.ask": "अपना स्वास्थ्य सवाल यहां लिखें...",
+    "ask.placeholder.diag": "अपनी जांच रिपोर्ट, लैब रिजल्ट, या डॉक्टर के नोट्स यहां लिखें...",
+    "ask.submit.ask": "जवाब पाएं",
+    "ask.submit.diag": "मुझे समझाएं",
+    "ask.loading": "स्पष्ट जवाब खोज रहे हैं...",
+    "ask.rateLimit": "आपने प्रति घंटा सीमा पूरी कर ली है। जल्द वापस आएं।",
+    "ask.recentQuestions": "हाल के सवाल",
+    "ask.meta.title": "स्वास्थ्य सवाल पूछें | Clarify Health",
+    "ask.meta.desc": "कोई भी स्वास्थ्य सवाल लिखें और सेकंडों में सरल जवाब पाएं। बिना शब्दावली, बिना आलोचना — सिर्फ विश्वसनीय जानकारी।",
+    "ask.example.cholesterol": "हाई कोलेस्ट्रॉल का क्या मतलब है?",
+    "ask.example.anxiety": "चिंता का इलाज कैसे होता है?",
+    "ask.example.sleep": "मैं बेहतर नींद कैसे ले सकता हूं?",
+    "ask.example.a1c": "मेरा A1C 7.2% है",
+    "ask.example.hypertension": "डॉक्टर ने कहा मुझे हाई ब्लड प्रेशर है",
+    "ask.example.tsh": "लैब रिजल्ट में TSH 6.5 है",
+
+    // About
+    "about.title": "हमारे बारे में",
+    "about.p1": "Clarify Health न्यू जर्सी के एक हाई स्कूल छात्र ने बनाया जिसने देखा कि जब लोगों को नई बीमारी का पता चलता है तो ऑनलाइन जानकारी अक्सर भ्रमित करने वाली, चिकित्सा शब्दावली से भरी और कभी-कभी डरावनी होती है।",
+    "about.p2": "यह साइट इसलिए है क्योंकि हर किसी को अपनी सेहत समझने का हक है। सिर्फ डॉक्टर और नर्सें नहीं — हर कोई। आपकी दादी। आपका पड़ोसी। वह व्यक्ति जो अभी वेटिंग रूम में बैठा है।",
+    "about.p3": "इस साइट का हर लेख रोजमर्रा की सरल भाषा में लिखा गया है। बिना व्याख्या के कोई चिकित्सा शब्दावली नहीं। आपके पहले से ज्ञान के बारे में कोई धारणा नहीं। बस स्पष्ट, ईमानदार जानकारी।",
+    "about.disclaimer": "Clarify Health एक शैक्षिक संसाधन है, पेशेवर चिकित्सा सलाह का विकल्प नहीं। हमेशा अपने डॉक्टर से सलाह लें।",
+    "about.meta.title": "Clarify Health के बारे में — हमारा मिशन",
+    "about.meta.desc": "NJ के एक हाई स्कूल छात्र ने लोगों को उनकी सेहत समझने में मदद के लिए बनाया। स्पष्ट, ईमानदार जानकारी जो कोई भी समझ सके।",
+
+    // 404
+    "404.title": "404",
+    "404.message": "ओह! पेज नहीं मिला",
+    "404.link": "होम पेज पर वापस जाएं",
+
+    // Floating button
+    "fab.label": "सवाल पूछें",
+  },
+  ar: {
+    // Nav / global
+    "nav.topics": "المواضيع",
+    "nav.ask": "اسأل",
+    "nav.about": "من نحن",
+    "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
+
+    // Homepage
+    "home.hero.line1": "صحتك،",
+    "home.hero.line2": "أخيراً",
+    "home.hero.line3": "أصبحت مفهومة.",
+    "home.hero.sub": "شروحات واضحة وموثوقة للحالات الصحية الشائعة — مكتوبة ليفهمها الجميع.",
+    "home.search.placeholder": "ابحث عن حالة صحية أو اطرح سؤالاً...",
+    "home.search.button": "بحث",
+    "home.stat.topics": "مواضيع صحية موضحة",
+    "home.stat.sections": "أقسام بلغة بسيطة",
+    "home.stat.jargon": "خالية من المصطلحات الطبية",
+    "home.stat1.value": "88%",
+    "home.stat1.label": "من البالغين الأمريكيين يفتقرون إلى المهارات اللازمة للتعامل مع النظام الصحي",
+    "home.stat2.value": "9 من 10",
+    "home.stat2.label": "أشخاص يواجهون صعوبة في فهم المعلومات الصحية اليومية",
+    "home.stat3.value": "238 مليار دولار",
+    "home.stat3.label": "تُفقد سنوياً في أمريكا بسبب ضعف الثقافة الصحية",
+    "home.stat.source": "المصادر: National Assessment of Adult Literacy (NAAL) · CDC · American Journal of Health Behavior",
+    "home.explore": "تصفح المواضيع",
+    "home.readMore": "اقرأ المزيد",
+    "home.holistic.label": "عافية مبنية على الأدلة",
+    "home.holistic.title": "الصحة الشاملة والطبيعية",
+    "home.holistic.sub": "ماذا يقول البحث فعلاً؟ كل موضوع يستشهد فقط بمصادر محكّمة — PubMed و NIH و Harvard Health و Mayo Clinic.",
+    "home.meta.title": "Clarify Health — صحتك بلغة بسيطة",
+    "home.meta.desc": "تعليم صحي واضح وموثوق بالعربية البسيطة. افهم السكري وضغط الدم والكوليسترول والمزيد — بدون تعقيد.",
+
+    // Topics index
+    "topics.title": "المواضيع الصحية",
+    "topics.sub": "اضغط على أي موضوع لقراءة شرح واضح وبسيط.",
+    "topics.meta.title": "المواضيع الصحية | Clarify Health",
+    "topics.meta.desc": "تصفح 10 حالات صحية شائعة موضحة بالعربية البسيطة. السكري وضغط الدم والكوليسترول والربو والقلق والمزيد.",
+
+    // Topic detail
+    "topic.backToTopics": "المواضيع",
+    "topic.doctorQuestions": "5 أسئلة لتسألها لطبيبك",
+    "topic.copy": "انسخ هذه الأسئلة",
+    "topic.copied": "تم النسخ!",
+    "topic.sourcesDisclaimer": "Clarify Health يبسط المعلومات من مصادر طبية موثوقة. استشر طبيبك دائماً.",
+    "topic.sourcesTitle": "المصادر والقراءات الإضافية",
+    "topic.disclaimer": "هذه المعلومات لأغراض تعليمية فقط وليست بديلاً عن الاستشارة الطبية المتخصصة. استشر طبيبك دائماً.",
+    "topic.stillHaveQuestions": "لا تزال لديك أسئلة؟",
+    "topic.cta.sub": "اكتب أي سؤال صحي واحصل على إجابة واضحة وبسيطة.",
+    "topic.cta.button": "اطرح سؤالاً",
+    "topic.notFound": "الموضوع غير موجود",
+    "topic.backLink": "← العودة إلى المواضيع",
+
+    // Ask page
+    "ask.heading.ask1": "اسأل أي شيء عن",
+    "ask.heading.ask2": "صحتك.",
+    "ask.heading.diag1": "افهم",
+    "ask.heading.diag2": "تشخيصك.",
+    "ask.sub.ask": "احصل على إجابة بلغة بسيطة في ثوانٍ. بدون مصطلحات، بدون أحكام.",
+    "ask.sub.diag": "الصق ما أخبرك به طبيبك. سنشرحه لك بلغة بسيطة.",
+    "ask.tab.ask": "اطرح سؤالاً",
+    "ask.tab.diagnosis": "افهم تشخيصك",
+    "ask.placeholder.ask": "اكتب سؤالك الصحي هنا...",
+    "ask.placeholder.diag": "الصق تشخيصك أو نتائج الفحوصات أو ملاحظات الطبيب هنا...",
+    "ask.submit.ask": "احصل على الإجابة",
+    "ask.submit.diag": "اشرح لي هذا",
+    "ask.loading": "جارٍ البحث عن إجابة واضحة...",
+    "ask.rateLimit": "لقد وصلت إلى الحد الأقصى للساعة. عد قريباً.",
+    "ask.recentQuestions": "الأسئلة الأخيرة",
+    "ask.meta.title": "اطرح سؤالاً صحياً | Clarify Health",
+    "ask.meta.desc": "اكتب أي سؤال صحي واحصل على إجابة واضحة بالعربية البسيطة في ثوانٍ. بدون مصطلحات، بدون أحكام — معلومات موثوقة فقط.",
+    "ask.example.cholesterol": "ماذا يعني ارتفاع الكوليسترول؟",
+    "ask.example.anxiety": "كيف يُعالج القلق؟",
+    "ask.example.sleep": "كيف يمكنني النوم بشكل أفضل؟",
+    "ask.example.a1c": "نتيجة A1C هي 7.2%",
+    "ask.example.hypertension": "الطبيب قال عندي ضغط دم مرتفع المرحلة الأولى",
+    "ask.example.tsh": "نتائج الفحص تُظهر TSH 6.5",
+
+    // About
+    "about.title": "من نحن",
+    "about.p1": "Clarify Health أنشأه طالب ثانوي في نيو جيرسي لاحظ شيئاً مقلقاً: عندما يتلقى الناس تشخيصاً جديداً، تكون المعلومات المتاحة عبر الإنترنت غالباً مربكة ومليئة بالمصطلحات الطبية وأحياناً مخيفة.",
+    "about.p2": "هذا الموقع موجود لأن الجميع يستحق أن يفهم صحته. ليس الأطباء والممرضون فقط — الجميع. جدتك. جارك. الشخص الجالس في غرفة الانتظار الآن قلقاً مما أخبره الطبيب.",
+    "about.p3": "كل مقال في هذا الموقع مكتوب بلغة يومية بسيطة. لا مصطلحات طبية بدون شرح. لا افتراضات حول ما تعرفه مسبقاً. فقط معلومات واضحة وصادقة لمساعدتك على الشعور بقدر أقل من الارتباك وقدر أكبر من السيطرة.",
+    "about.disclaimer": "Clarify Health مصدر تعليمي وليس بديلاً عن الاستشارة الطبية المتخصصة. استشر طبيبك دائماً.",
+    "about.meta.title": "عن Clarify Health — مهمتنا",
+    "about.meta.desc": "أنشأه طالب ثانوي في NJ لمساعدة الناس على فهم صحتهم. معلومات واضحة وصادقة مكتوبة ليفهمها الجميع.",
+
+    // 404
+    "404.title": "404",
+    "404.message": "عذراً! الصفحة غير موجودة",
+    "404.link": "العودة إلى الصفحة الرئيسية",
+
+    // Floating button
+    "fab.label": "اطرح سؤالاً",
+  },
 };
 
 // ── Provider ────────────────────────────────────────────────────────────────
+
+const VALID_LANGUAGES: Language[] = ["en", "es", "ur", "hi", "ar"];
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "es") return "es";
+      if (stored && VALID_LANGUAGES.includes(stored as Language)) return stored as Language;
     } catch { /* noop */ }
     return "en";
   });
@@ -220,6 +534,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.lang = lang;
+    document.documentElement.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
   }, [lang]);
 
   const isInitial = useRef(true);

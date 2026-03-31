@@ -21,9 +21,20 @@ export interface Topic {
 
 import type { Language } from "@/contexts/LanguageContext";
 import { topicsEs } from "./topics-es";
+import { topicsUr } from "./topics-ur";
+import { topicsHi } from "./topics-hi";
+import { topicsAr } from "./topics-ar";
+
+const topicsByLang: Record<Language, Topic[]> = {
+  en: undefined as unknown as Topic[], // assigned after `topics` is declared
+  es: topicsEs,
+  ur: topicsUr,
+  hi: topicsHi,
+  ar: topicsAr,
+};
 
 export function getTopics(lang: Language): Topic[] {
-  return lang === "es" ? topicsEs : topics;
+  return topicsByLang[lang] ?? topics;
 }
 
 export const topics: Topic[] = [
@@ -566,3 +577,5 @@ export const topics: Topic[] = [
     ],
   },
 ];
+
+topicsByLang.en = topics;

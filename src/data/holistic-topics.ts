@@ -21,13 +21,30 @@ export interface HolisticTopic {
 
 import type { Language } from "@/contexts/LanguageContext";
 import { holisticTopicsEs } from "./holistic-topics-es";
+import { holisticTopicsUr } from "./holistic-topics-ur";
+import { holisticTopicsHi } from "./holistic-topics-hi";
+import { holisticTopicsAr } from "./holistic-topics-ar";
+
+const holisticByLang: Record<Language, HolisticTopic[]> = {
+  en: undefined as unknown as HolisticTopic[], // assigned after declaration
+  es: holisticTopicsEs,
+  ur: holisticTopicsUr,
+  hi: holisticTopicsHi,
+  ar: holisticTopicsAr,
+};
 
 export function getHolisticTopics(lang: Language): HolisticTopic[] {
-  return lang === "es" ? holisticTopicsEs : holisticTopics;
+  return holisticByLang[lang] ?? holisticTopics;
 }
 
-export const HOLISTIC_DISCLAIMER_EN = "These approaches may complement — but should never replace — medical treatment. Results vary. Always consult your doctor before making changes to your health routine. No guarantees are made about the effectiveness of any approach described here.";
-export const HOLISTIC_DISCLAIMER_ES = "Estos enfoques pueden complementar — pero nunca deben reemplazar — el tratamiento médico. Los resultados varían. Siempre consulta a tu doctor antes de hacer cambios en tu rutina de salud. No se hacen garantías sobre la efectividad de ningún enfoque descrito aquí.";
+export const HOLISTIC_DISCLAIMERS: Record<Language, string> = {
+  en: "These approaches may complement — but should never replace — medical treatment. Results vary. Always consult your doctor before making changes to your health routine. No guarantees are made about the effectiveness of any approach described here.",
+  es: "Estos enfoques pueden complementar — pero nunca deben reemplazar — el tratamiento médico. Los resultados varían. Siempre consulta a tu doctor antes de hacer cambios en tu rutina de salud. No se hacen garantías sobre la efectividad de ningún enfoque descrito aquí.",
+  ur: "یہ طریقے طبی علاج کی تکمیل کر سکتے ہیں — لیکن کبھی اس کی جگہ نہیں لے سکتے۔ نتائج مختلف ہو سکتے ہیں۔ اپنی صحت کے معمول میں کوئی تبدیلی کرنے سے پہلے ہمیشہ اپنے ڈاکٹر سے مشورہ کریں۔",
+  hi: "ये तरीके चिकित्सा उपचार के पूरक हो सकते हैं — लेकिन कभी इसकी जगह नहीं ले सकते। परिणाम अलग-अलग हो सकते हैं। अपनी स्वास्थ्य दिनचर्या में कोई बदलाव करने से पहले हमेशा अपने डॉक्टर से सलाह लें।",
+  ar: "هذه الأساليب قد تكمل — لكن لا ينبغي أبداً أن تحل محل — العلاج الطبي. النتائج تختلف. استشر طبيبك دائماً قبل إجراء تغييرات على روتينك الصحي.",
+};
+
 
 export const holisticTopics: HolisticTopic[] = [
   {
@@ -181,3 +198,5 @@ export const holisticTopics: HolisticTopic[] = [
     ],
   },
 ];
+
+holisticByLang.en = holisticTopics;

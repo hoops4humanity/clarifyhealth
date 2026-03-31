@@ -66,11 +66,11 @@ const Header = () => {
 
             {/* Language toggle */}
             <div className="flex gap-0.5 ml-2" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px", padding: "2px" }}>
-              {(["en", "es"] as Language[]).map((l) => (
+              {(["en", "es", "ur", "hi", "ar"] as Language[]).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider transition-all"
+                  className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wider transition-all"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     borderRadius: "3px",
@@ -121,14 +121,14 @@ const Header = () => {
 
           {/* Mobile language toggle */}
           <div
-            className="nav-overlay-link mt-10 flex gap-1"
+            className="nav-overlay-link mt-10 flex flex-wrap gap-1"
             style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "6px", padding: "3px", animationDelay: `${navLinks.length * 80}ms` }}
           >
-            {(["en", "es"] as Language[]).map((l) => (
+            {(["en", "es", "ur", "hi", "ar"] as Language[]).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className="px-4 py-2 text-[14px] font-semibold uppercase tracking-wider transition-all"
+                className="px-3 py-2 text-[14px] font-semibold uppercase tracking-wider transition-all"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   borderRadius: "4px",
