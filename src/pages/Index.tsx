@@ -12,9 +12,9 @@ const Index = () => {
   const topics = getTopics(lang);
 
   const stats = [
-    { value: "88%", label: t("home.stat.topics") === "Topics Covered" ? "of American adults lack the skills to navigate the healthcare system" : "de los adultos estadounidenses carecen de las habilidades para navegar el sistema de salud", size: "text-[48px] md:text-[56px]" },
-    { value: "9 in 10", label: t("home.stat.sections") === "Sections of Content" ? "people struggle to understand everyday health information" : "personas tienen dificultades para comprender la información de salud cotidiana", size: "text-[52px] md:text-[64px]" },
-    { value: "$238B", label: t("home.stat.jargon") === "Jargon-Free" ? "lost annually in the US due to low health literacy" : "se pierden anualmente en EE.UU. debido a la baja alfabetización en salud", size: "text-[46px] md:text-[52px]" },
+    { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[48px] md:text-[56px]" },
+    { value: t("home.stat2.value"), label: t("home.stat2.label"), size: "text-[52px] md:text-[64px]" },
+    { value: t("home.stat3.value"), label: t("home.stat3.label"), size: "text-[46px] md:text-[52px]" },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
