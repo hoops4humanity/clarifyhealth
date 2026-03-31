@@ -129,11 +129,6 @@ const AskPage = () => {
         return;
       }
 
-      if (!res.ok) {
-        setError(data.error ?? t("ask.error") ?? "Something went wrong. Please try again.");
-        return;
-      }
-
       recordRequest();
       trackQuestionAsked(tab, lang);
       setAnswer(data.answer);
