@@ -12,6 +12,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { lang, t } = useLanguage();
   const topics = getTopics(lang);
+  const holisticTopics = getHolisticTopics(lang);
 
   const stats = [
     { value: t("home.stat1.value"), label: t("home.stat1.label"), size: "text-[52px] md:text-[60px]" },
