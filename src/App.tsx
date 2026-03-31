@@ -14,6 +14,7 @@ import TopicsIndex from "./pages/TopicsIndex";
 import TopicPage from "./pages/TopicPage";
 import AskPage from "./pages/AskPage";
 import AboutPage from "./pages/AboutPage";
+import HolisticTopicPage from "./pages/HolisticTopicPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
