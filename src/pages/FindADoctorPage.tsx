@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -7,38 +6,31 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   MapPin, Search, Loader2, Phone, Star, ChevronDown, ChevronUp,
-  ExternalLink, LocateFixed, BadgeCheck, SlidersHorizontal,
+  ExternalLink, LocateFixed, Clock, AlertTriangle,
 } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
 interface Doctor {
-  npi: string;
+  placeId: string;
   name: string;
-  credential: string;
-  specialty: string;
-  practiceName: string;
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
+  address: string;
+  rating: number | null;
+  reviewCount: number;
   phone: string;
-  acceptingNew: boolean;
-  gender: string;
-  aiReason: string;
+  googleMapsUrl: string;
+  healthgradesUrl: string;
+  openNow: boolean | null;
 }
 
 interface SearchResult {
   specialty: string;
-  reasoning: string;
+  reason: string;
+  urgency: "routine" | "soon" | "urgent";
+  urgency_note: string;
   doctors: Doctor[];
-  total: number;
+  fallback: boolean;
 }
 
 const QUICK_PILLS = [
@@ -49,30 +41,20 @@ const QUICK_PILLS = [
   { key: "checkup", label: "General checkup" },
 ];
 
-const INSURANCE_OPTIONS = ["Any", "Medicare", "Medicaid", "Private"];
-const GENDER_OPTIONS = ["Any", "Male", "Female"];
-const LANGUAGE_OPTIONS_DOCTOR = ["Any", "English", "Spanish", "Arabic", "Hindi", "Urdu"];
-
 const SORT_OPTIONS = [
   { value: "default", label: "Default" },
   { value: "name", label: "A–Z" },
+  { value: "rating", label: "Highest rated" },
 ];
 
 const FindADoctorPage = () => {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  // Form state
   const [symptoms, setSymptoms] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [locating, setLocating] = useState(false);
-  const [insurance, setInsurance] = useState("Any");
-  const [genderPref, setGenderPref] = useState("Any");
-  const [langPref, setLangPref] = useState("Any");
-  const [acceptingNew, setAcceptingNew] = useState(true);
-  const [prefsOpen, setPrefsOpen] = useState(false);
 
-  // Results state
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SearchResult | null>(null);
   const [error, setError] = useState("");
@@ -109,10 +91,6 @@ const FindADoctorPage = () => {
         body: {
           symptoms: symptoms.trim(),
           zipCode: zipCode.trim() || undefined,
-          insurance: insurance !== "Any" ? insurance : undefined,
-          gender: genderPref !== "Any" ? genderPref : undefined,
-          language: langPref !== "Any" ? langPref : undefined,
-          acceptingNew,
         },
       });
 
@@ -121,15 +99,6 @@ const FindADoctorPage = () => {
         setError(data.error);
       } else {
         setResult(data as SearchResult);
-
-        // Store anonymous analytics
-        supabase.from("doctor_search_queries").insert({
-          symptoms_summary: symptoms.trim().slice(0, 100),
-          specialty_detected: data?.specialty || null,
-          zip_code: zipCode.trim().slice(0, 5) || null,
-          insurance_type: insurance !== "Any" ? insurance : null,
-          results_count: data?.doctors?.length || 0,
-        }).then(() => {}); // fire and forget
       }
     } catch (err: any) {
       setError(err?.message || "Something went wrong. Please try again.");
@@ -146,14 +115,25 @@ const FindADoctorPage = () => {
   const sortedDoctors = result?.doctors
     ? [...result.doctors].sort((a, b) => {
         if (sortBy === "name") return a.name.localeCompare(b.name);
+        if (sortBy === "rating") return (b.rating ?? 0) - (a.rating ?? 0);
         return 0;
       })
     : [];
 
-  const formatPhone = (phone: string) => {
-    const digits = phone.replace(/\D/g, "");
-    if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-    return phone;
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalf = rating - fullStars >= 0.25;
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<Star key={i} className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />);
+      } else if (i === fullStars && hasHalf) {
+        stars.push(<Star key={i} className="h-3.5 w-3.5 fill-yellow-400/50 text-yellow-400" />);
+      } else {
+        stars.push(<Star key={i} className="h-3.5 w-3.5 text-gray-300" />);
+      }
+    }
+    return stars;
   };
 
   return (
@@ -183,7 +163,7 @@ const FindADoctorPage = () => {
             </p>
           </div>
 
-          {/* Step 1 */}
+          {/* Step 1: Describe symptoms */}
           <div className="mb-8">
             <Label
               className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-3 block"
@@ -214,7 +194,7 @@ const FindADoctorPage = () => {
             </div>
           </div>
 
-          {/* Step 2 */}
+          {/* Step 2: Location */}
           <div className="mb-8">
             <Label
               className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-3 block"
@@ -248,61 +228,6 @@ const FindADoctorPage = () => {
             </div>
           </div>
 
-          {/* Step 3 — Preferences */}
-          <Collapsible open={prefsOpen} onOpenChange={setPrefsOpen} className="mb-8">
-            <CollapsibleTrigger asChild>
-              <button
-                className="flex items-center gap-2 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                <SlidersHorizontal className="h-3.5 w-3.5" />
-                {t("findDoctor.preferences")}
-                {prefsOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-              </button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-4 space-y-4 pl-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-[12px] text-muted-foreground">{t("findDoctor.insurance")}</Label>
-                  <Select value={insurance} onValueChange={setInsurance}>
-                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {INSURANCE_OPTIONS.map((o) => (
-                        <SelectItem key={o} value={o}>{o}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-[12px] text-muted-foreground">{t("findDoctor.gender")}</Label>
-                  <Select value={genderPref} onValueChange={setGenderPref}>
-                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {GENDER_OPTIONS.map((o) => (
-                        <SelectItem key={o} value={o}>{o}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-[12px] text-muted-foreground">{t("findDoctor.language")}</Label>
-                  <Select value={langPref} onValueChange={setLangPref}>
-                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {LANGUAGE_OPTIONS_DOCTOR.map((o) => (
-                        <SelectItem key={o} value={o}>{o}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex items-center gap-3 pt-5">
-                  <Switch checked={acceptingNew} onCheckedChange={setAcceptingNew} />
-                  <Label className="text-[13px]">{t("findDoctor.acceptingNew")}</Label>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-
           {/* Search Button */}
           <Button
             onClick={handleSearch}
@@ -325,122 +250,198 @@ const FindADoctorPage = () => {
           <div ref={resultsRef}>
             {result && (
               <div className="mt-12">
-                {/* Specialty detected */}
-                <div className="mb-6 p-4 rounded-md" style={{ background: "hsl(var(--section-bg))" }}>
-                  <p className="text-[13px] text-muted-foreground" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    <span className="font-medium text-foreground">{t("findDoctor.specialtyDetected")}:</span>{" "}
-                    <span className="text-primary font-semibold">{result.specialty}</span>
-                  </p>
-                  <p className="text-[13px] text-muted-foreground mt-1">{result.reasoning}</p>
-                </div>
 
-                {/* Sort controls */}
-                {sortedDoctors.length > 0 && (
-                  <div className="flex items-center justify-between mb-4">
-                    <p
-                      className="text-[13px] text-muted-foreground"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {sortedDoctors.length} {t("findDoctor.resultsFound")}
-                    </p>
-                    <Select value={sortBy} onValueChange={setSortBy}>
-                      <SelectTrigger className="w-[140px] h-8 text-[12px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {SORT_OPTIONS.map((o) => (
-                          <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                {/* Urgency banner */}
+                {result.urgency === "urgent" && (
+                  <div className="mb-6 p-4 rounded-md bg-red-50 border border-red-200">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-[14px] font-semibold text-red-800">
+                          This may need prompt attention
+                        </p>
+                        <p className="text-[13px] text-red-700 mt-1">
+                          {result.urgency_note} Please call your doctor or visit urgent care soon.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
 
-                {/* Doctor cards */}
-                {sortedDoctors.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-10 text-[15px]">
-                    {t("findDoctor.noResults")}
+                {result.urgency === "soon" && (
+                  <div className="mb-6 p-4 rounded-md bg-amber-50 border border-amber-200">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-[14px] font-semibold text-amber-800">
+                          Consider scheduling soon
+                        </p>
+                        <p className="text-[13px] text-amber-700 mt-1">
+                          {result.urgency_note}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Specialty callout */}
+                <div className="mb-6 p-4 rounded-md" style={{ background: "hsl(var(--section-bg))" }}>
+                  <p className="text-[14px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    Based on what you described, you likely need a{" "}
+                    <span className="text-primary font-semibold">{result.specialty}</span>.{" "}
+                    <span className="text-muted-foreground">{result.reason}</span>
                   </p>
-                ) : (
-                  <div className="space-y-4">
-                    {sortedDoctors.map((doc) => (
-                      <div
-                        key={doc.npi}
-                        className="p-5 rounded-md transition-colors hover:shadow-sm"
-                        style={{
-                          border: "0.5px solid hsl(var(--border))",
-                          background: "hsl(var(--card))",
-                        }}
+                </div>
+
+                {/* Fallback message */}
+                {(result.fallback || sortedDoctors.length === 0) ? (
+                  <div className="text-center py-12">
+                    <p className="text-[15px] text-muted-foreground mb-4">
+                      We couldn't find doctors in our system for your area.
+                    </p>
+                    <p className="text-[14px] text-muted-foreground">
+                      Try searching on{" "}
+                      <a
+                        href="https://www.healthgrades.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary font-medium hover:underline"
                       >
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <h3
-                              className="text-[18px] font-medium text-foreground"
-                              style={{ fontFamily: "'Playfair Display', serif" }}
-                            >
-                              {doc.name}
-                              {doc.credential && (
-                                <span className="text-muted-foreground text-[13px] font-normal ml-1">
-                                  , {doc.credential}
-                                </span>
+                        Healthgrades.com
+                      </a>
+                      {" "}or{" "}
+                      <a
+                        href="https://www.zocdoc.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary font-medium hover:underline"
+                      >
+                        Zocdoc.com
+                      </a>
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Sort controls */}
+                    <div className="flex items-center justify-between mb-4">
+                      <p
+                        className="text-[13px] text-muted-foreground"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                      >
+                        {sortedDoctors.length} {t("findDoctor.resultsFound")}
+                      </p>
+                      <Select value={sortBy} onValueChange={setSortBy}>
+                        <SelectTrigger className="w-[160px] h-8 text-[12px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {SORT_OPTIONS.map((o) => (
+                            <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Doctor cards */}
+                    <div className="space-y-4">
+                      {sortedDoctors.map((doc) => (
+                        <div
+                          key={doc.placeId}
+                          className="p-5 rounded-md transition-colors hover:shadow-sm"
+                          style={{
+                            border: "0.5px solid hsl(var(--border))",
+                            background: "hsl(var(--card))",
+                          }}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <h3
+                                className="text-[18px] font-medium text-foreground"
+                                style={{ fontFamily: "'Playfair Display', serif" }}
+                              >
+                                {doc.name}
+                              </h3>
+
+                              {/* Rating */}
+                              {doc.rating !== null && (
+                                <div className="flex items-center gap-2 mt-1.5">
+                                  <div className="flex items-center gap-0.5">
+                                    {renderStars(doc.rating)}
+                                  </div>
+                                  <span className="text-[13px] font-medium text-foreground">
+                                    {doc.rating.toFixed(1)}
+                                  </span>
+                                  <span className="text-[12px] text-muted-foreground">
+                                    ({doc.reviewCount} Google reviews)
+                                  </span>
+                                </div>
                               )}
-                            </h3>
-                            <p className="text-[13px] text-primary font-medium mt-0.5">
-                              {doc.specialty}
-                            </p>
-                            {doc.practiceName && (
-                              <p className="text-[13px] text-muted-foreground mt-0.5">
-                                {doc.practiceName}
-                              </p>
+                            </div>
+
+                            {/* Open/Closed badge */}
+                            {doc.openNow !== null && (
+                              <span
+                                className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium whitespace-nowrap ${
+                                  doc.openNow
+                                    ? "bg-green-50 text-green-700"
+                                    : "bg-gray-100 text-gray-500"
+                                }`}
+                              >
+                                <Clock className="h-3 w-3" />
+                                {doc.openNow ? "Open now" : "Closed"}
+                              </span>
                             )}
                           </div>
-                          {doc.acceptingNew && (
-                            <span className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium bg-primary/10 text-primary whitespace-nowrap">
-                              <BadgeCheck className="h-3 w-3" />
-                              Accepting patients
-                            </span>
-                          )}
-                        </div>
 
-                        <div className="flex items-center gap-4 mt-3 text-[13px] text-muted-foreground">
-                          {doc.address.city && (
-                            <span className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {doc.address.city}, {doc.address.state} {doc.address.zip}
-                            </span>
-                          )}
-                          {doc.phone && (
-                            <a
-                              href={`tel:${doc.phone}`}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors"
-                            >
-                              <Phone className="h-3 w-3" />
-                              {formatPhone(doc.phone)}
-                            </a>
-                          )}
-                        </div>
+                          {/* Address & phone */}
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-3 text-[13px] text-muted-foreground">
+                            {doc.address && (
+                              <span className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3 shrink-0" />
+                                {doc.address}
+                              </span>
+                            )}
+                            {doc.phone && (
+                              <a
+                                href={`tel:${doc.phone}`}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors"
+                              >
+                                <Phone className="h-3 w-3 shrink-0" />
+                                {doc.phone}
+                              </a>
+                            )}
+                          </div>
 
-                        {/* AI reason */}
-                        <p className="mt-3 text-[12px] text-muted-foreground italic">
-                          {t("findDoctor.whyThisDoctor")}: {doc.aiReason}
-                        </p>
-
-                        {/* View profile */}
-                        <div className="mt-3 pt-3" style={{ borderTop: "0.5px solid hsl(var(--border))" }}>
-                          <a
-                            href={`https://www.google.com/maps/search/${encodeURIComponent(`${doc.name} ${doc.specialty} ${doc.address.city} ${doc.address.state}`)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary hover:underline"
-                            style={{ fontFamily: "'DM Sans', sans-serif" }}
+                          {/* Links */}
+                          <div
+                            className="mt-3 pt-3 flex flex-wrap items-center gap-4"
+                            style={{ borderTop: "0.5px solid hsl(var(--border))" }}
                           >
-                            {t("findDoctor.viewProfile")}
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
+                            <a
+                              href={doc.googleMapsUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary hover:underline"
+                              style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                              {t("findDoctor.viewProfile")}
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                            <a
+                              href={doc.healthgradesUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-muted-foreground hover:text-foreground hover:underline"
+                              style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                              View on Healthgrades
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  </>
                 )}
 
                 {/* Disclaimer */}
