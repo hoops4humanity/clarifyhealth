@@ -15,6 +15,9 @@ import TopicPage from "./pages/TopicPage";
 import AskPage from "./pages/AskPage";
 import AboutPage from "./pages/AboutPage";
 import HolisticTopicPage from "./pages/HolisticTopicPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import MyNotesPage from "./pages/MyNotesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,7 +37,6 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-
           <ScrollToTop />
           <Header />
           <div className="animate-page-enter">
@@ -45,6 +47,9 @@ const App = () => (
               <Route path="/ask" element={<AskPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/holistic/:id" element={<HolisticTopicPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/my-notes" element={<MyNotesPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
