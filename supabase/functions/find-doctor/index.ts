@@ -126,7 +126,15 @@ serve(async (req) => {
 
     const npiUrl = `https://npiregistry.cms.hhs.gov/api/?${npiParams.toString()}`;
     const npiResponse = await fetch(npiUrl);
-    const npiData = await npiResponse.json();
+    const npiText = await npiResponse.text();
+    
+    let npiData;
+    try {
+      npiData = JSON.parse(npiText);
+    } catch {
+      console.error("NPI API returned non-JSON:", npiText.slice(0, 200));
+      npiData = { results: [], result_count: 0 };
+    }
 
     const doctors = (npiData.results || []).map((r: any) => {
       const basic = r.basic || {};

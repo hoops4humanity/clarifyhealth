@@ -19,6 +19,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyNotesPage from "./pages/MyNotesPage";
 import FindADoctorPage from "./pages/FindADoctorPage";
+import WellnessPlanPage from "./pages/WellnessPlanPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/my-notes" element={<MyNotesPage />} />
               <Route path="/find-a-doctor" element={<FindADoctorPage />} />
+              <Route path="/wellness-plan" element={<WellnessPlanPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

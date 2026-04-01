@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown, User, LogOut, FileText } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, FileText, Leaf } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -118,6 +118,14 @@ const UserMenu = () => {
           >
             <FileText className="h-3.5 w-3.5" />
             {t("auth.myNotes")}
+          </button>
+          <button
+            onClick={() => { navigate("/wellness-plan"); setOpen(false); }}
+            className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-foreground hover:bg-muted transition-colors"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            <Leaf className="h-3.5 w-3.5" />
+            {t("nav.wellnessPlan")}
           </button>
           <div style={{ borderTop: "0.5px solid hsl(var(--border))" }} />
           <button
