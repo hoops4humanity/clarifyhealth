@@ -363,13 +363,13 @@ const FindADoctorPage = () => {
                               </h3>
 
                               {/* Rating */}
-                              {doc.rating !== null && (
+                              {doc.rating != null && (
                                 <div className="flex items-center gap-2 mt-1.5">
                                   <div className="flex items-center gap-0.5">
                                     {renderStars(doc.rating)}
                                   </div>
                                   <span className="text-[13px] font-medium text-foreground">
-                                    {doc.rating.toFixed(1)}
+                                    {Number(doc.rating).toFixed(1)}
                                   </span>
                                   <span className="text-[12px] text-muted-foreground">
                                     ({doc.reviewCount} Google reviews)
