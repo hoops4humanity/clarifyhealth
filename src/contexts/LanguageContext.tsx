@@ -121,6 +121,36 @@ const strings: Record<Language, Record<string, string>> = {
 
     // Floating button
     "fab.label": "Ask a question",
+
+    // Auth
+    "auth.login": "Log In",
+    "auth.signup": "Sign Up",
+    "auth.signOut": "Sign Out",
+    "auth.loginSub": "Welcome back. Log in to access your notes.",
+    "auth.signupSub": "Create an account to save your doctor visit notes.",
+    "auth.noAccount": "Don't have an account?",
+    "auth.hasAccount": "Already have an account?",
+    "auth.checkEmail": "Check your email",
+    "auth.checkEmailSub": "We sent you a confirmation link. Click it to activate your account.",
+    "auth.myNotes": "My Notes",
+    "auth.settings": "Settings",
+    "nav.myNotes": "My Notes",
+
+    // Notes
+    "notes.title": "My Doctor Visits",
+    "notes.add": "Add visit",
+    "notes.addVisit": "Add a Visit",
+    "notes.doctorName": "Doctor name",
+    "notes.date": "Date of visit",
+    "notes.specialty": "Specialty",
+    "notes.notesLabel": "Notes",
+    "notes.notesPlaceholder": "Write or paste your notes from the visit...",
+    "notes.recording": "Upload recording",
+    "notes.uploadAudio": "Upload audio (.mp3, .m4a, .wav, .webm)",
+    "notes.save": "Save visit",
+    "notes.process": "Process my notes",
+    "notes.empty": "No visits yet. Add your first visit note.",
+    "notes.yourNotes": "Your Notes",
   },
   es: {
     // Nav / global
