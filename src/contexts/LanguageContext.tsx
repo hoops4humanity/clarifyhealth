@@ -535,6 +535,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+    // Set lang-* class on body for font-family switching
+    document.body.className = document.body.className.replace(/\blang-\w+\b/g, "");
+    document.body.classList.add(`lang-${lang}`);
   }, [lang]);
 
   const isInitial = useRef(true);

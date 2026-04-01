@@ -1,13 +1,86 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
+
+const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
+  { code: "en", flag: "\u{1F1FA}\u{1F1F8}", name: "English" },
+  { code: "es", flag: "\u{1F1EA}\u{1F1F8}", name: "Español" },
+  { code: "ar", flag: "\u{1F1F8}\u{1F1E6}", name: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629" },
+  { code: "hi", flag: "\u{1F1EE}\u{1F1F3}", name: "\u0939\u093F\u0928\u094D\u0926\u0940" },
+  { code: "ur", flag: "\u{1F1F5}\u{1F1F0}", name: "\u0627\u0631\u062F\u0648" },
+];
+
+const LanguageDropdown = ({ mobile = false }: { mobile?: boolean }) => {
+  const { lang, setLang } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const current = LANGUAGE_OPTIONS.find((o) => o.code === lang) ?? LANGUAGE_OPTIONS[0];
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className={`flex items-center gap-1.5 transition-colors hover:text-foreground ${
+          mobile ? "text-[16px] py-2 px-3" : "text-[13px] px-2.5 py-1.5"
+        } font-medium text-muted-foreground`}
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          border: "0.5px solid hsl(var(--border))",
+          borderRadius: "4px",
+        }}
+      >
+        <span>{current.flag}</span>
+        <span>{current.name}</span>
+        <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div
+          className="absolute z-[60] mt-1 min-w-[160px] overflow-hidden bg-background shadow-lg"
+          style={{
+            border: "0.5px solid hsl(var(--border))",
+            borderRadius: "6px",
+            right: 0,
+          }}
+        >
+          {LANGUAGE_OPTIONS.map((opt) => (
+            <button
+              key={opt.code}
+              onClick={() => { setLang(opt.code); setOpen(false); }}
+              className={`flex w-full items-center gap-2.5 px-3.5 transition-colors ${
+                mobile ? "py-3 text-[15px]" : "py-2 text-[13px]"
+              } ${
+                lang === opt.code
+                  ? "bg-primary/10 text-primary font-semibold"
+                  : "text-foreground hover:bg-muted"
+              }`}
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              <span>{opt.flag}</span>
+              <span>{opt.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const { lang, setLang, t } = useLanguage();
+  const { t } = useLanguage();
 
   const navLinks = [
     { to: "/topics", label: t("nav.topics") },
@@ -64,24 +137,7 @@ const Header = () => {
               </Link>
             ))}
 
-            {/* Language toggle */}
-            <div className="flex gap-0.5 ml-2" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px", padding: "2px" }}>
-              {(["en", "es", "ur", "hi", "ar"] as Language[]).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wider transition-all"
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    borderRadius: "3px",
-                    background: lang === l ? "hsl(var(--primary))" : "transparent",
-                    color: lang === l ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
-                  }}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
+            <LanguageDropdown />
           </nav>
 
           {/* Mobile toggle */}
@@ -119,26 +175,12 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Mobile language toggle */}
+          {/* Mobile language dropdown */}
           <div
-            className="nav-overlay-link mt-10 flex flex-wrap gap-1"
-            style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "6px", padding: "3px", animationDelay: `${navLinks.length * 80}ms` }}
+            className="nav-overlay-link mt-10"
+            style={{ animationDelay: `${navLinks.length * 80}ms` }}
           >
-            {(["en", "es", "ur", "hi", "ar"] as Language[]).map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                className="px-3 py-2 text-[14px] font-semibold uppercase tracking-wider transition-all"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  borderRadius: "4px",
-                  background: lang === l ? "hsl(var(--primary))" : "transparent",
-                  color: lang === l ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
-                }}
-              >
-                {l}
-              </button>
-            ))}
+            <LanguageDropdown mobile />
           </div>
         </div>
       )}

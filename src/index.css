@@ -79,6 +79,21 @@
     letter-spacing: -0.5px;
   }
 
+  /* Language-specific fonts */
+  body.lang-ar, body.lang-ar h1, body.lang-ar h2, body.lang-ar h3, body.lang-ar h4, body.lang-ar h5, body.lang-ar h6 {
+    font-family: 'Noto Sans Arabic', 'DM Sans', sans-serif;
+  }
+  body.lang-hi, body.lang-hi h1, body.lang-hi h2, body.lang-hi h3, body.lang-hi h4, body.lang-hi h5, body.lang-hi h6 {
+    font-family: 'Noto Sans Devanagari', 'DM Sans', sans-serif;
+  }
+  body.lang-ur, body.lang-ur h1, body.lang-ur h2, body.lang-ur h3, body.lang-ur h4, body.lang-ur h5, body.lang-ur h6 {
+    font-family: 'Noto Nastaliq Urdu', 'DM Sans', sans-serif;
+  }
+  /* Urdu Nastaliq renders larger — reduce base size by 1px */
+  body.lang-ur {
+    font-size: 15px;
+  }
+
   /* Selection */
   ::selection {
     background: #1a6b4a;
@@ -166,6 +181,10 @@
 }
 .nav-link-underline:hover::after {
   transform: scaleX(1);
+}
+/* RTL: flip underline origin */
+[dir="rtl"] .nav-link-underline::after {
+  transform-origin: right;
 }
 
 /* Search / input green glow */
