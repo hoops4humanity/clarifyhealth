@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown, User, LogOut, FileText } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
   { code: "en", flag: "\u{1F1FA}\u{1F1F8}", name: "English" },
@@ -76,11 +77,69 @@ const LanguageDropdown = ({ mobile = false }: { mobile?: boolean }) => {
   );
 };
 
+const UserMenu = () => {
+  const { user, signOut } = useAuth();
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const initials = user?.user_metadata?.display_name
+    ? user.user_metadata.display_name.slice(0, 2).toUpperCase()
+    : (user?.email?.slice(0, 2).toUpperCase() ?? "U");
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground text-[12px] font-semibold hover:bg-primary/90 transition-colors"
+        style={{ fontFamily: "'DM Sans', sans-serif" }}
+      >
+        {initials}
+      </button>
+
+      {open && (
+        <div
+          className="absolute z-[60] mt-2 min-w-[180px] overflow-hidden bg-background shadow-lg"
+          style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "6px", right: 0 }}
+        >
+          <button
+            onClick={() => { navigate("/my-notes"); setOpen(false); }}
+            className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-foreground hover:bg-muted transition-colors"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            {t("auth.myNotes")}
+          </button>
+          <div style={{ borderTop: "0.5px solid hsl(var(--border))" }} />
+          <button
+            onClick={() => { signOut(); setOpen(false); }}
+            className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            {t("auth.signOut")}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { t } = useLanguage();
+  const { user, loading } = useAuth();
 
   const navLinks = [
     { to: "/topics", label: t("nav.topics") },
@@ -138,6 +197,29 @@ const Header = () => {
             ))}
 
             <LanguageDropdown />
+
+            {!loading && (
+              user ? (
+                <UserMenu />
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/login"
+                    className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {t("auth.login")}
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-[13px] font-medium px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {t("auth.signup")}
+                  </Link>
+                </div>
+              )
+            )}
           </nav>
 
           {/* Mobile toggle */}
@@ -173,12 +255,40 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+
+            {!loading && (
+              user ? (
+                <Link
+                  to="/my-notes"
+                  onClick={() => setMobileOpen(false)}
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    animationDelay: `${navLinks.length * 80}ms`,
+                  }}
+                >
+                  {t("auth.myNotes")}
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    animationDelay: `${navLinks.length * 80}ms`,
+                  }}
+                >
+                  {t("auth.login")}
+                </Link>
+              )
+            )}
           </nav>
 
           {/* Mobile language dropdown */}
           <div
             className="nav-overlay-link mt-10"
-            style={{ animationDelay: `${navLinks.length * 80}ms` }}
+            style={{ animationDelay: `${(navLinks.length + 1) * 80}ms` }}
           >
             <LanguageDropdown mobile />
           </div>
