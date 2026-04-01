@@ -143,6 +143,7 @@ const Header = () => {
 
   const navLinks = [
     { to: "/topics", label: t("nav.topics") },
+    { to: "/find-a-doctor", label: t("nav.findDoctor") },
     { to: "/ask", label: t("nav.ask") },
     { to: "/about", label: t("nav.about") },
   ];
