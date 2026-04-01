@@ -30,7 +30,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <PageMeta title="Log In | Clarify Health" description="Log in to access your doctor visit notes and health journal." />
+      <PageMeta title="Log In | Clarify Health" description="Log in to access your doctor visit notes and health journal." canonical="/login" />
       <main className="min-h-screen flex items-center justify-center px-6 pt-20 pb-24">
         <div className="w-full max-w-[400px]">
           <h1

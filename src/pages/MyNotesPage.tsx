@@ -160,7 +160,7 @@ const MyNotesPage = () => {
 
   return (
     <>
-      <PageMeta title="My Doctor Visits | Clarify Health" description="Keep track of your doctor visits and get AI-powered summaries." />
+      <PageMeta title="My Doctor Visits | Clarify Health" description="Keep track of your doctor visits and get AI-powered summaries." canonical="/my-notes" />
       <main className="min-h-screen pt-28 pb-24 px-6">
         <div className="mx-auto max-w-[800px]">
           <div className="flex items-center justify-between mb-10">

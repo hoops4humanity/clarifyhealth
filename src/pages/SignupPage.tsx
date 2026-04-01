@@ -62,7 +62,7 @@ const SignupPage = () => {
 
   return (
     <>
-      <PageMeta title="Sign Up | Clarify Health" description="Create an account to save your doctor visit notes." />
+      <PageMeta title="Sign Up | Clarify Health" description="Create an account to save your doctor visit notes." canonical="/signup" />
       <main className="min-h-screen flex items-center justify-center px-6 pt-20 pb-24">
         <div className="w-full max-w-[400px]">
           <h1
