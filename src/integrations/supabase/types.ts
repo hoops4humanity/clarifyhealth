@@ -14,7 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visit_notes: {
+        Row: {
+          ai_holistic: string | null
+          ai_plain_english: string | null
+          ai_questions: Json | null
+          ai_summary: string | null
+          created_at: string
+          doctor_name: string
+          id: string
+          language: string | null
+          raw_notes: string | null
+          recording_url: string | null
+          specialty: string | null
+          user_id: string
+          visit_date: string
+        }
+        Insert: {
+          ai_holistic?: string | null
+          ai_plain_english?: string | null
+          ai_questions?: Json | null
+          ai_summary?: string | null
+          created_at?: string
+          doctor_name: string
+          id?: string
+          language?: string | null
+          raw_notes?: string | null
+          recording_url?: string | null
+          specialty?: string | null
+          user_id: string
+          visit_date?: string
+        }
+        Update: {
+          ai_holistic?: string | null
+          ai_plain_english?: string | null
+          ai_questions?: Json | null
+          ai_summary?: string | null
+          created_at?: string
+          doctor_name?: string
+          id?: string
+          language?: string | null
+          raw_notes?: string | null
+          recording_url?: string | null
+          specialty?: string | null
+          user_id?: string
+          visit_date?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
