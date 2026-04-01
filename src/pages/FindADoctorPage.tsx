@@ -398,7 +398,9 @@ const FindADoctorPage = () => {
                             {doc.address && (
                               <span className="flex items-center gap-1">
                                 <MapPin className="h-3 w-3 shrink-0" />
-                                {doc.address}
+                                {typeof doc.address === "object"
+                                  ? [doc.address.line1, doc.address.line2, doc.address.city, doc.address.state, doc.address.zip].filter(Boolean).join(", ")
+                                  : doc.address}
                               </span>
                             )}
                             {doc.phone && (
