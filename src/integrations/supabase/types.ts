@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      doctor_search_queries: {
+        Row: {
+          created_at: string
+          id: string
+          insurance_type: string | null
+          results_count: number | null
+          specialty_detected: string | null
+          symptoms_summary: string | null
+          zip_code: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          insurance_type?: string | null
+          results_count?: number | null
+          specialty_detected?: string | null
+          symptoms_summary?: string | null
+          zip_code?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          insurance_type?: string | null
+          results_count?: number | null
+          specialty_detected?: string | null
+          symptoms_summary?: string | null
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

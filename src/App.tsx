@@ -18,6 +18,7 @@ import HolisticTopicPage from "./pages/HolisticTopicPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyNotesPage from "./pages/MyNotesPage";
+import FindADoctorPage from "./pages/FindADoctorPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/my-notes" element={<MyNotesPage />} />
+              <Route path="/find-a-doctor" element={<FindADoctorPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
