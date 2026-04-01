@@ -19,6 +19,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyNotesPage from "./pages/MyNotesPage";
 import FindADoctorPage from "./pages/FindADoctorPage";
+import WellnessPlanPage from "./pages/WellnessPlanPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
