@@ -15,7 +15,7 @@ import PageMeta from "@/components/PageMeta";
 interface Doctor {
   placeId: string;
   name: string;
-  address: string;
+  address: string | { line1?: string; line2?: string; city?: string; state?: string; zip?: string } | null;
   rating: number | null;
   reviewCount: number;
   phone: string;
