@@ -254,6 +254,34 @@ const strings: Record<Language, Record<string, string>> = {
 
     // Floating button
     "fab.label": "Haz una pregunta",
+
+    // Auth
+    "auth.login": "Iniciar sesión",
+    "auth.signup": "Registrarse",
+    "auth.signOut": "Cerrar sesión",
+    "auth.loginSub": "Bienvenido de nuevo. Inicia sesión para acceder a tus notas.",
+    "auth.signupSub": "Crea una cuenta para guardar tus notas de visitas médicas.",
+    "auth.noAccount": "¿No tienes cuenta?",
+    "auth.hasAccount": "¿Ya tienes cuenta?",
+    "auth.checkEmail": "Revisa tu correo",
+    "auth.checkEmailSub": "Te enviamos un enlace de confirmación. Haz clic para activar tu cuenta.",
+    "auth.myNotes": "Mis notas",
+    "auth.settings": "Configuración",
+    "nav.myNotes": "Mis notas",
+    "notes.title": "Mis visitas médicas",
+    "notes.add": "Agregar visita",
+    "notes.addVisit": "Agregar una visita",
+    "notes.doctorName": "Nombre del doctor",
+    "notes.date": "Fecha de la visita",
+    "notes.specialty": "Especialidad",
+    "notes.notesLabel": "Notas",
+    "notes.notesPlaceholder": "Escribe o pega tus notas de la visita...",
+    "notes.recording": "Subir grabación",
+    "notes.uploadAudio": "Subir audio (.mp3, .m4a, .wav, .webm)",
+    "notes.save": "Guardar visita",
+    "notes.process": "Procesar mis notas",
+    "notes.empty": "Aún no hay visitas. Agrega tu primera nota de visita.",
+    "notes.yourNotes": "Tus notas",
   },
   ur: {
     // Nav / global
