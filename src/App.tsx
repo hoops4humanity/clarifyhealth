@@ -18,6 +18,7 @@ import HolisticTopicPage from "./pages/HolisticTopicPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyNotesPage from "./pages/MyNotesPage";
+import FindADoctorPage from "./pages/FindADoctorPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
