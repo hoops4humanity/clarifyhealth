@@ -30,24 +30,22 @@ serve(async (req) => {
       });
     }
 
-    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!ANTHROPIC_API_KEY) {
-      throw new Error("ANTHROPIC_API_KEY is not configured");
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) {
+      throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    // Step 1: Claude AI triage — determine specialty + urgency
-    const aiResponse = await fetch("https://api.anthropic.com/v1/messages", {
+    // Step 1: AI triage — determine specialty + urgency
+    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20241022",
-        max_tokens: 300,
-        system: TRIAGE_SYSTEM_PROMPT,
+        model: "google/gemini-3-flash-preview",
         messages: [
+          { role: "system", content: TRIAGE_SYSTEM_PROMPT },
           { role: "user", content: symptoms.trim().slice(0, 500) },
         ],
       }),
@@ -60,11 +58,19 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      throw new Error(`Anthropic API error: ${aiResponse.status}`);
+      if (aiResponse.status === 402) {
+        return new Response(JSON.stringify({ error: "AI service temporarily unavailable. Please try again later." }), {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const errText = await aiResponse.text();
+      console.error("AI gateway error:", aiResponse.status, errText);
+      throw new Error(`AI gateway error: ${aiResponse.status}`);
     }
 
     const aiData = await aiResponse.json();
-    const rawContent = aiData.content?.[0]?.text ?? "";
+    const rawContent = aiData.choices?.[0]?.message?.content ?? "";
 
     let triage: {
       specialty: string;
